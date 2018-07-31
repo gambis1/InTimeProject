@@ -1,0 +1,16 @@
+Modifiche:
+
+1) admin: possibilità di aggiungere persone
+-> lista dinamica di partecipanti (drop down o altro)
+
+2) ore assegnate non obbligatorie [FATTO]
+
+3) identificazione utenti: codice in tabella Person -> admin lo passa agli utenti
+- AccessCode [FATTO]
+- In finestra admin
+
+4) aggiungere nota: (ora, progetto attivo, persona) alle 16:20 ho fatto questo
+
+ALTER TABLE -tabella- ADD CONSTRAINT -nome- DEFAULT (newid()) FOR -nomecampo-
+
+UPDATE Person SET AccessCode = NEWID()
