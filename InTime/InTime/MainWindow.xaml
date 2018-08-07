@@ -44,22 +44,25 @@
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Nome:</Label>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center">Progetto1</TextBlock>
+                    <TextBlock x:Name="TextBlockProject" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" />
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Descrizione:</Label>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" TextWrapping="Wrap" VerticalAlignment="Center">Cliente, descrizione, cose varie, balbablablbalbajnefnj iofmwkof wkofm owfj wnfjw oflwef nmfw emjfokwe o wo</TextBlock>
+                    <TextBlock x:Name="Description" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" TextWrapping="Wrap" VerticalAlignment="Center">Cliente, descrizione, cose varie, balbablablbalbajnefnj iofmwkof wkofm owfj wnfjw oflwef nmfw emjfokwe o wo</TextBlock>
                     <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">Tempo di lavoro stimato:</Label>
                     <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">120:00</TextBlock>
                     <Label Grid.Row="3" Grid.Column="2" VerticalAlignment="Center">Tempo di lavoro totale:</Label>
                     <TextBlock Grid.Row="3" Grid.Column="3" VerticalAlignment="Center">01:25</TextBlock>
                 </Grid>
             </GroupBox>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="10" HorizontalAlignment="Left">
+                <ComboBox x:Name="ComboPerson" Width="162" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="10">
                 <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">OK</Button>
-                <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">Annulla</Button>
+                <Button x:Name="CancelButton" VerticalAlignment="Bottom" Margin="10" Height="25" Width="90" Click="CancelButton_Click">Annulla</Button>
                 <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">Applica</Button>
             </StackPanel>
-            <ScrollViewer>
-
+            <ScrollViewer Margin="0,6,0,0">
+                
             </ScrollViewer>
         </DockPanel>
     </DockPanel>

@@ -6,7 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="2195ae5ea4c24d9e9e36d5eb9fd5429c" Name="Diagram1">
         <EntityTypeShape EntityType="inTimeDbModel.Person" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="inTimeDbModel.Project" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="inTimeDbModel.Project" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
         <EntityTypeShape EntityType="inTimeDbModel.TimeTrack" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="inTimeDbModel.FK_Time_ToPerson" ManuallyRouted="false" />
         <AssociationConnector Association="inTimeDbModel.FK_Time_ToProject" ManuallyRouted="false" />
