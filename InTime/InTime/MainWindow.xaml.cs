@@ -103,6 +103,15 @@ namespace InTime
             {
                 Description.Text = desc;
             }
+
+            DbSet<TimeTrack> timeTracks = intimeDb.TimeTracks;
+
+            var queryTime = from TimeTrack in timeTracks
+                            join Project in projectList on TimeTrack.ProjectId equals Project.Id
+                            select TimeTrack.WorkTime;
+
+            
+                            
             
         }
 
