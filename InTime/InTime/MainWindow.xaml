@@ -37,16 +37,16 @@
                         <ColumnDefinition Width="123*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="26*" />
+                        <RowDefinition Height="26*" />
+                        <RowDefinition Height="17*" />
+                        <RowDefinition Height="26" />
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Nome:</Label>
                     <TextBlock x:Name="TextBlockProject" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" />
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Descrizione:</Label>
-                    <TextBlock x:Name="Description" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" TextWrapping="Wrap" VerticalAlignment="Center">Cliente, descrizione, cose varie, balbablablbalbajnefnj iofmwkof wkofm owfj wnfjw oflwef nmfw emjfokwe o wo</TextBlock>
+                    <TextBlock x:Name="Description" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" TextWrapping="Wrap" VerticalAlignment="Center" />
                     <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">Tempo di lavoro stimato:</Label>
                     <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">120:00</TextBlock>
                     <Label Grid.Row="3" Grid.Column="2" VerticalAlignment="Center">Tempo di lavoro totale:</Label>
@@ -62,7 +62,7 @@
                 <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">Applica</Button>
             </StackPanel>
             <ScrollViewer Margin="0,6,0,0">
-                
+
             </ScrollViewer>
         </DockPanel>
     </DockPanel>

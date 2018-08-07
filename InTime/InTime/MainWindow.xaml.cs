@@ -28,7 +28,7 @@ namespace InTime
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
             GetDbData();
-            GetDbData();
+            GetDbPerson();
         }
 
         // aggiungere un nuovo progetto al database
@@ -89,9 +89,21 @@ namespace InTime
         private void ListBoxItem_Selected(object sender, RoutedEventArgs e)
         {
             ListBoxItem itm = (ListBoxItem)sender;
-            string project = itm.Content.ToString();
-            TextBlockProject.SetValue(TextBlockProject, project);
-            MessageBox.Show(itm.Content.ToString());
+            string projectName = itm.Content.ToString();
+            TextBlockProject.Text = projectName;
+
+            DbSet<Project> projectList = intimeDb.Projects;
+
+            var queryDesc = from Project in projectList
+                        where Project.ProjectName == projectName
+                        select Project.Description;
+
+            queryDesc.ToList();
+            foreach(string desc in queryDesc)
+            {
+                Description.Text = desc;
+            }
+            
         }
 
         private void GetDbPerson()
