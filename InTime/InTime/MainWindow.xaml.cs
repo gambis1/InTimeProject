@@ -111,7 +111,7 @@ namespace InTime
             
         }
 
-        private void GetDbPerson()
+        public void GetDbPerson()
         {
             DbSet<Person> personList = intimeDb.People;
 
@@ -132,6 +132,12 @@ namespace InTime
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void AddPerson_Click(object sender, RoutedEventArgs e)
+        {
+            AddPersonWindow addPersonWindow = new AddPersonWindow();
+            addPersonWindow.Show();
         }
     }
 }

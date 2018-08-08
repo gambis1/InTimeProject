@@ -1,0 +1,43 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+
+namespace InTime
+{
+    /// <summary>
+    /// Logica di interazione per AddPerson.xaml
+    /// </summary>
+    public partial class AddPersonWindow : Window
+    {
+        inTimeDbEntities intimeDb = new inTimeDbEntities();
+
+        public AddPersonWindow()
+        {
+            InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string name = PersonName.Text;
+
+            InTime.Person newPerson = new InTime.Person();
+            newPerson.PersonName = name;
+
+            intimeDb.People.Add(newPerson);
+            intimeDb.SaveChanges();
+
+            this.Close();
+        }
+    }
+}
