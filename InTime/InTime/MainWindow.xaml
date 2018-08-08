@@ -55,6 +55,7 @@
             </GroupBox>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="10" HorizontalAlignment="Left">
                 <ComboBox x:Name="ComboPerson" Width="162" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <Button x:Name="AddPerson" Width="26" Height="26" Margin="10,0,0,0">+</Button>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="10">
                 <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">OK</Button>

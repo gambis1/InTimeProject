@@ -94,15 +94,11 @@ namespace InTime
 
             DbSet<Project> projectList = intimeDb.Projects;
 
-            var queryDesc = from Project in projectList
+            var queryDesc = (from Project in projectList
                         where Project.ProjectName == projectName
-                        select Project.Description;
+                        select Project.Description).FirstOrDefault();
 
-            queryDesc.ToList();
-            foreach(string desc in queryDesc)
-            {
-                Description.Text = desc;
-            }
+            Description.Text = queryDesc;
 
             DbSet<TimeTrack> timeTracks = intimeDb.TimeTracks;
 
