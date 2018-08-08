@@ -27,16 +27,31 @@ namespace InTime
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             string name = PersonName.Text;
 
-            InTime.Person newPerson = new InTime.Person();
-            newPerson.PersonName = name;
+            if (name != "")
+            {
+                InTime.Person newPerson = new InTime.Person();
+                newPerson.PersonName = name;
 
-            intimeDb.People.Add(newPerson);
-            intimeDb.SaveChanges();
+                intimeDb.People.Add(newPerson);
+                intimeDb.SaveChanges();
 
+                
+
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Il nome della persona non è stato inserito. Inserire un nome di persona valido, quindi riprovare.", "Nome di persona non valido", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
             this.Close();
         }
     }
