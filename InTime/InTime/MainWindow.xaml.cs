@@ -120,6 +120,7 @@ namespace InTime
                         select Person.PersonName;
 
             List<string> list = query.ToList();
+            ComboPerson.Items.Clear();
 
             foreach (string personName in list)
             {

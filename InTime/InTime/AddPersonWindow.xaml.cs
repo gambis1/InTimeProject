@@ -38,16 +38,18 @@ namespace InTime
 
                 intimeDb.People.Add(newPerson);
                 intimeDb.SaveChanges();
-
-                
-
-                this.Close();
             }
             else
             {
                 MessageBox.Show("Il nome della persona non è stato inserito. Inserire un nome di persona valido, quindi riprovare.", "Nome di persona non valido", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
+            MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            if(mainWindow != null)
+            {
+                mainWindow.GetDbPerson();
+            }
+            this.Close();
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
