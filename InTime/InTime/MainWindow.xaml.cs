@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace InTime
 {
@@ -139,12 +140,27 @@ namespace InTime
 
         private void AddGridPerson_Click(object sender, RoutedEventArgs e)
         {
-            string name = ComboPerson.Text;
+            string personName = ComboPerson.Text;
 
-            List<string> listName = new List<string>();
-            listName.Add(name);
+            DbSet<TimeTrack> timeTracks = intimeDb.TimeTracks;
+            DbSet<Person> people = intimeDb.People;
 
-            NameGrid.ItemsSource = listName;
+            var queryPerson = (from Person in people
+                              where Person.PersonName == personName
+                              select Person.Id).FirstOrDefault();
+
+            var queryWorkTime = (from TimeTrack in timeTracks
+                        where TimeTrack.PersonId == queryPerson
+                        select TimeTrack.WorkTime).FirstOrDefault().ToString();
+
+            NameGrid.Items.Add(new NameTimeForGrid { name = personName, time = queryWorkTime });
+
         }
+    }
+
+    public class NameTimeForGrid
+    {
+        public string name { get; set; }
+        public string time { get; set; }
     }
 }

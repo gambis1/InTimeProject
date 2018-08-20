@@ -64,10 +64,10 @@
                 <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">Applica</Button>
             </StackPanel>
             <ScrollViewer Margin="0,6,0,0">
-                <DataGrid Name="NameGrid" AutoGenerateColumns="False" GridLinesVisibility="All">
+                <DataGrid Name="NameGrid" AutoGenerateColumns="False" GridLinesVisibility="All" ItemsSource="{Binding}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn x:Name="ColumnName" Header="Nome" Width="300"/>
-                        <DataGridTextColumn x:Name="ColumnTime" Header="Tempo" Width="400" />
+                        <DataGridTextColumn x:Name="ColumnName" Header="Nome" Width="300" Binding="{Binding name}" />
+                        <DataGridTextColumn x:Name="ColumnTime" Header="Tempo" Width="400" Binding="{Binding time}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>
