@@ -55,7 +55,8 @@
             </GroupBox>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="10" HorizontalAlignment="Left">
                 <ComboBox x:Name="ComboPerson" Width="162" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                <Button x:Name="AddPerson" Width="26" Height="26" Margin="10,0,0,0" FontWeight="Bold" Click="AddPerson_Click">+</Button>
+                <Button x:Name="AddGridPerson" Width="26" Height="26" Margin="10,0,0,0" Content="+" Click="AddGridPerson_Click" />
+                <Button x:Name="AddPerson" Width="111" Height="26" Margin="200,0,0,0" FontWeight="Bold" Click="AddPerson_Click" Content="Aggiungi Persona"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="10">
                 <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">OK</Button>
@@ -63,7 +64,12 @@
                 <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">Applica</Button>
             </StackPanel>
             <ScrollViewer Margin="0,6,0,0">
-
+                <DataGrid Name="NameGrid" AutoGenerateColumns="False" GridLinesVisibility="All">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn x:Name="ColumnName" Header="Nome" Width="300"/>
+                        <DataGridTextColumn x:Name="ColumnTime" Header="Tempo" Width="400" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </ScrollViewer>
         </DockPanel>
     </DockPanel>

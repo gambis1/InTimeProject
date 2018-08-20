@@ -104,11 +104,7 @@ namespace InTime
 
             var queryTime = from TimeTrack in timeTracks
                             join Project in projectList on TimeTrack.ProjectId equals Project.Id
-                            select TimeTrack.WorkTime;
-
-            
-                            
-            
+                            select TimeTrack.WorkTime; 
         }
 
         public void GetDbPerson()
@@ -139,6 +135,16 @@ namespace InTime
         {
             AddPersonWindow addPersonWindow = new AddPersonWindow();
             addPersonWindow.Show();
+        }
+
+        private void AddGridPerson_Click(object sender, RoutedEventArgs e)
+        {
+            string name = ComboPerson.Text;
+
+            List<string> listName = new List<string>();
+            listName.Add(name);
+
+            NameGrid.ItemsSource = listName;
         }
     }
 }
