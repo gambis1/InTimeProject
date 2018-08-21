@@ -105,7 +105,9 @@ namespace InTime
 
             var queryTime = from TimeTrack in timeTracks
                             join Project in projectList on TimeTrack.ProjectId equals Project.Id
-                            select TimeTrack.WorkTime; 
+                            select TimeTrack.WorkTime;
+
+            // TO DO: aggiungere metodo che aggiorna anche la datagrid
         }
 
         public void GetDbPerson()
@@ -124,6 +126,8 @@ namespace InTime
                 ComboBoxItem comboItem = new ComboBoxItem();
                 comboItem.Content = personName;
                 ComboPerson.Items.Add(comboItem);
+
+                // TO DO: fare in modo che se una persona sta già nella datagrid non compaia qui
             }
         }
 
@@ -154,6 +158,7 @@ namespace InTime
                         select TimeTrack.WorkTime).FirstOrDefault().ToString();
 
             NameGrid.Items.Add(new NameTimeForGrid { name = personName, time = queryWorkTime });
+
 
         }
     }
