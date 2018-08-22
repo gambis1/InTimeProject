@@ -35,23 +35,14 @@ namespace InTime
         // aggiungere un nuovo progetto al database
         private void NewProjectButton_Click(object sender, RoutedEventArgs e)
         {
-            string projectName = NewProjectNameBox.Text;
-
-            if (projectName != "")
-            {
+            
                 InTime.Project newProject = new InTime.Project();
-                newProject.ProjectName = projectName;
+                newProject.ProjectName = "Nuovo progetto";
 
                 intimeDb.Projects.Add(newProject);
                 intimeDb.SaveChanges();
 
-                GetDbData();
-                NewProjectNameBox.Text = "";
-            }
-            else
-            {
-                MessageBox.Show("Il nome del progetto non è stato inserito. Inserire un nome progetto valido, quindi riprovare.","Nome progetto non valido",MessageBoxButton.OK,MessageBoxImage.Error);
-            }
+                GetDbData(); 
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
@@ -103,9 +94,11 @@ namespace InTime
 
             DbSet<TimeTrack> timeTracks = intimeDb.TimeTracks;
 
-            var queryTime = from TimeTrack in timeTracks
+            var queryTime = (from TimeTrack in timeTracks
                             join Project in projectList on TimeTrack.ProjectId equals Project.Id
-                            select TimeTrack.WorkTime;
+                            select TimeTrack.WorkTime).FirstOrDefault().ToString();
+
+            WorkTime.Text = queryTime;
 
             // TO DO: aggiungere metodo che aggiorna anche la datagrid
         }
@@ -158,8 +151,6 @@ namespace InTime
                         select TimeTrack.WorkTime).FirstOrDefault().ToString();
 
             NameGrid.Items.Add(new NameTimeForGrid { name = personName, time = queryWorkTime });
-
-
         }
     }
 
