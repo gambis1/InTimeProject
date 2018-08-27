@@ -3,11 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:local="clr-namespace:InTime"
         mc:Ignorable="d"
         Title="InTime - MainWindow" Height="550" Width="350">
     <Grid>
         <Button x:Name="AdministratorButton" Content="Amministratore" HorizontalAlignment="Left" Margin="242,0,0,0" VerticalAlignment="Top" Width="90" Click="AdministratorButton_Click"/>
+        <Button Content="Progetto1" HorizontalAlignment="Left" Margin="35,78,0,0" VerticalAlignment="Top" Width="120" Height="65" Click="TimeProject1_Click"/>
+        <Button Content="Progetto2" HorizontalAlignment="Left" Margin="35,163,0,0" VerticalAlignment="Top" Width="120" Height="65" Click="TimeProject2_Click"/>
+        <Label Content="Tempo:" HorizontalAlignment="Left" Margin="10,419,0,0" VerticalAlignment="Top" Width="51" RenderTransformOrigin="1.863,2.615"/>
+        <TextBlock x:Name="TimeTextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="95,468,0,0" VerticalAlignment="Top" Width="122"/>
     </Grid>
 </Window>
