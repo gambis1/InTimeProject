@@ -15,7 +15,7 @@
             <Button x:Name="AdministratorButton" Content="ADMIN" Margin="5" Padding="10 0 10 0" Click="AdministratorButton_Click"/>
         </StackPanel>
 
-        <Button Name="StopTimer" Content="STOP" Height="50" Margin="10" DockPanel.Dock="Bottom"/>
+        <Button Name="StopTimer" Content="STOP" Height="50" Margin="10" DockPanel.Dock="Bottom" Click="StopTimer_Click"/>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Name="ProjectButtons" Orientation="Vertical">

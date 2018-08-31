@@ -172,6 +172,8 @@
       <DependentUpon>AppModel.edmx</DependentUpon>
       <LastGenOutput>AppModel.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\StoppedIcon.ico" />
+    <Resource Include="Resources\PlayingIcon.ico" />
     <None Include="Resources\InTimeIcon.ico" />
   </ItemGroup>
   <ItemGroup>

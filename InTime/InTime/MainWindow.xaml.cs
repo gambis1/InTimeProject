@@ -32,10 +32,14 @@ namespace InTime
 
             // ICONA
             this.Hide();
-            inTimeIcon.Icon = InTime.Properties.Resources.InTimeIcon;
+            inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/StoppedIcon.ico");
+            // vecchio percorso:
+            // InTime.Properties.Resources.InTimeIcon;
             inTimeIcon.Visible = true;
 
-            inTimeIcon.Click += new EventHandler(this.inTimeIcon_Click);
+            inTimeIcon.Text = "Timer fermo";
+
+            inTimeIcon.Click += new EventHandler(this.inTimeIcon_Click);            
         }
 
         // POSIZIONE FINESTRA
@@ -90,6 +94,9 @@ namespace InTime
         {
             Thread thread = new Thread(new ThreadStart(RunTime));
             thread.Start();
+
+            inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/PlayingIcon.ico");
+            inTimeIcon.Text = "Progetto 1: 00:00";
         }
 
         private void TimeProject2_Click(object sender, RoutedEventArgs e)
@@ -103,6 +110,14 @@ namespace InTime
             string elapsedTime = string.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds);
             timeProject.Start();
             //TimeTextBlock.Text = elapsedTime;
+        }
+
+        private void StopTimer_Click(object sender, RoutedEventArgs e)
+        {
+            // TO DO: metodo per fermare il timer
+
+            inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/StoppedIcon.ico");
+            inTimeIcon.Text = "Timer fermo";
         }
     }
 }
