@@ -69,7 +69,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddPersonWindow.xaml.cs">
+    <Compile Include="Admin\AddPersonWindow.xaml.cs">
       <DependentUpon>AddPersonWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppModel.Context.cs">
@@ -87,6 +87,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Logic\TimeTrack.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -102,11 +103,14 @@
     <Compile Include="TimeTrack.cs">
       <DependentUpon>AppModel.tt</DependentUpon>
     </Compile>
-    <Page Include="AddPersonWindow.xaml">
+    <Compile Include="User\UserWindow.xaml.cs">
+      <DependentUpon>UserWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Admin\AddPersonWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AdministratorWindow.xaml">
+    <Page Include="Admin\AdministratorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -114,7 +118,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AdministratorWindow.xaml.cs">
+    <Compile Include="Admin\AdministratorWindow.xaml.cs">
       <DependentUpon>AdministratorWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -123,6 +127,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="User\UserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -179,8 +187,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TimeTrack\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

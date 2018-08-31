@@ -15,7 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 
-namespace InTime
+namespace InTime.Admin
 {
     /// <summary>
     /// Logica di interazione per MainWindow.xaml

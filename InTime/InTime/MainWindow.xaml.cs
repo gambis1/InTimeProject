@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
+using InTime.User;
+using InTime.Admin;
 
 namespace InTime
 {
@@ -118,6 +120,12 @@ namespace InTime
 
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/StoppedIcon.ico");
             inTimeIcon.Text = "Timer fermo";
+        }
+
+        private void UserButton_Click(object sender, RoutedEventArgs e)
+        {
+            UserWindow userWindow = new UserWindow();
+            userWindow.Show();
         }
     }
 }
