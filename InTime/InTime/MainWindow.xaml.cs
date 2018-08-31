@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Forms;
-using Hardcodet.Wpf.TaskbarNotification;
 using System.Diagnostics;
 using System.Threading;
 
@@ -23,32 +22,68 @@ namespace InTime
     /// </summary>
     public partial class MainWindow : Window
     {
-
         NotifyIcon inTimeIcon = new NotifyIcon();
         Stopwatch timeProject = new Stopwatch();
 
         public MainWindow()
         {
             InitializeComponent();
+            this.Loaded += new RoutedEventHandler(WindowPositioned);
 
+            // ICONA
             this.Hide();
-            inTimeIcon.DoubleClick += new EventHandler(this.inTimeIcon_DoubleClick);
-
+            inTimeIcon.Icon = InTime.Properties.Resources.InTimeIcon;
             inTimeIcon.Visible = true;
 
-            inTimeIcon.Icon = InTime.Properties.Resources.InTimeIcon;            
+            inTimeIcon.Click += new EventHandler(this.inTimeIcon_Click);
         }
 
-        private void inTimeIcon_DoubleClick(object sender, EventArgs e)
+        // POSIZIONE FINESTRA
+        private void WindowPositioned(object sender, RoutedEventArgs e)
         {
-                this.Show();
-                this.WindowState = WindowState.Normal;
+            // RILEVAZIONE POSIZIONE MOUSE
+            System.Drawing.Point point = System.Windows.Forms.Control.MousePosition;
+            var mousePosition = new System.Windows.Point(point.X, point.Y);
+            var transform = PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice;
+            double mouseX = transform.Transform(mousePosition).X;
+
+            var desktopWorkingArea = System.Windows.SystemParameters.WorkArea;
+            this.Left = mouseX - this.Width/2;
+            this.Top = desktopWorkingArea.Bottom - this.Height;
+        }
+
+        // CLICK SU ICONA
+        private void inTimeIcon_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            this.Activate(); // focus su finestra
+            this.WindowState = WindowState.Normal;
+        }
+
+        // FOCUS FUORI DALLA FINESTRA PER NASCONDERLA
+        protected override void OnDeactivated(EventArgs e)
+        {
+            base.OnDeactivated(e);
+            this.Hide();
         }
 
         private void AdministratorButton_Click(object sender, RoutedEventArgs e)
         {
             AdministratorWindow administratorWindow = new AdministratorWindow();
             administratorWindow.Show();
+        }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = System.Windows.MessageBox.Show("Sei sicuro di voler uscire?", "Esci", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                inTimeIcon.Dispose(); // fa scomparire l'icona dalla barra
+                System.Windows.Application.Current.Shutdown();
+            } else
+            {
+                this.Show();
+            }            
         }
 
         private void TimeProject1_Click(object sender, RoutedEventArgs e)
