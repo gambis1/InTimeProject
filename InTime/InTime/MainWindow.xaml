@@ -11,6 +11,6 @@
         <Button Content="Progetto1" HorizontalAlignment="Left" Margin="35,78,0,0" VerticalAlignment="Top" Width="120" Height="65" Click="TimeProject1_Click"/>
         <Button Content="Progetto2" HorizontalAlignment="Left" Margin="35,163,0,0" VerticalAlignment="Top" Width="120" Height="65" Click="TimeProject2_Click"/>
         <Label Content="Tempo:" HorizontalAlignment="Left" Margin="10,419,0,0" VerticalAlignment="Top" Width="51" RenderTransformOrigin="1.863,2.615"/>
-        <TextBlock x:Name="TimeTextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="95,468,0,0" VerticalAlignment="Top" Width="122"/>
+        <TextBlock x:Name="TimeTextBlock" TextAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="20,450,0,0" VerticalAlignment="Top" Width="293" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" Height="34"/>
     </Grid>
 </Window>

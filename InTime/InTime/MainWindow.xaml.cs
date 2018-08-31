@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Windows.Forms;
 using Hardcodet.Wpf.TaskbarNotification;
 using System.Diagnostics;
+using System.Threading;
 
 namespace InTime
 {
@@ -24,7 +25,6 @@ namespace InTime
     {
 
         NotifyIcon inTimeIcon = new NotifyIcon();
-
         Stopwatch timeProject = new Stopwatch();
 
         public MainWindow()
@@ -53,16 +53,21 @@ namespace InTime
 
         private void TimeProject1_Click(object sender, RoutedEventArgs e)
         {
-            TimeSpan ts = timeProject.Elapsed;
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-            ts.Hours, ts.Minutes, ts.Seconds,
-            ts.Milliseconds / 10);
-            TimeTextBlock.Text = elapsedTime;
+            Thread thread = new Thread(new ThreadStart(RunTime));
+            thread.Start();
         }
 
         private void TimeProject2_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void RunTime()
+        {
+            TimeSpan ts = timeProject.Elapsed;
+            string elapsedTime = string.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds);
+            timeProject.Start();
+            TimeTextBlock.Text = elapsedTime;
         }
     }
 }
