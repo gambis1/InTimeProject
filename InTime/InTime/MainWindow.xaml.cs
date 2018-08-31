@@ -75,7 +75,7 @@ namespace InTime
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = System.Windows.MessageBox.Show("Sei sicuro di voler uscire?", "Esci", MessageBoxButton.OKCancel);
+            MessageBoxResult result = System.Windows.MessageBox.Show("Vuoi uscire dall'applicazione?", "Esci", MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
                 inTimeIcon.Dispose(); // fa scomparire l'icona dalla barra
@@ -102,7 +102,7 @@ namespace InTime
             TimeSpan ts = timeProject.Elapsed;
             string elapsedTime = string.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds);
             timeProject.Start();
-            TimeTextBlock.Text = elapsedTime;
+            //TimeTextBlock.Text = elapsedTime;
         }
     }
 }
