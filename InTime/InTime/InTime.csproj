@@ -87,7 +87,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Logic\TimeTrack.cs" />
+    <Compile Include="Logic\TimeTracker.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
