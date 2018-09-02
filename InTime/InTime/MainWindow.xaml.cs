@@ -27,7 +27,8 @@ namespace InTime
     public partial class MainWindow : Window
     {
         NotifyIcon inTimeIcon = new NotifyIcon();
-        Stopwatch timeProject = new Stopwatch();
+        Stopwatch timeProject1 = new Stopwatch();
+        Stopwatch timeProject2 = new Stopwatch();
         TimeTracker timeTracker;
 
         public MainWindow()
@@ -104,11 +105,23 @@ namespace InTime
 
         private void TimeProject1_Click(object sender, RoutedEventArgs e)
         {
-            Thread thread = new Thread(new ThreadStart(RunTime));
-            thread.Start();
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += timer_Tick1;
+            timer.Start();
+            timeProject1.Start();
+            timeProject2.Stop();
 
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/PlayingIcon.ico");
             inTimeIcon.Text = "Progetto 1: 00:00";
+        }
+
+        void timer_Tick1(object sender, EventArgs e)
+        {
+            TimeSpan ts = timeProject1.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds);
+            Project1Time.Text = elapsedTime;
+            inTimeIcon.Text = "Progetto 1: " + elapsedTime;
         }
 
         private void RunTime()
@@ -130,13 +143,21 @@ namespace InTime
         {
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += timer_Tick;
+            timer.Tick += timer_Tick2;
             timer.Start();
+            timeProject2.Start();
+            timeProject1.Stop();
+
+            inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/PlayingIcon.ico");
+            
         }
 
-        void timer_Tick(object sender, EventArgs e)
+        void timer_Tick2(object sender, EventArgs e)
         {
-            Project2Time.Text = DateTime.Now.ToLongTimeString();
+            TimeSpan ts = timeProject2.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds);
+            Project2Time.Text = elapsedTime;
+            inTimeIcon.Text = "Progetto 2: " + elapsedTime;
         }
 
         /*-------------------------------------------------------------- TASTO STOP --------------------------------------------------------------*/
@@ -147,6 +168,8 @@ namespace InTime
             //Console.WriteLine(timeTracker.Update().ToString());
             //timeTracker.Stop();
 
+            timeProject1.Stop();
+            timeProject2.Stop();
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/StoppedIcon.ico");
             inTimeIcon.Text = "Timer fermo";
         }

@@ -23,7 +23,7 @@
                 <DockPanel Name="Progetto1" Margin="10">
                     <Button Content="Lavora su Progetto 1" Padding="10" Margin="0 10 0 0" Click="TimeProject1_Click" DockPanel.Dock="Bottom"/>
                     <TextBlock FontSize="15" DockPanel.Dock="Left" VerticalAlignment="Center">Progetto 1</TextBlock>
-                    <TextBlock FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center" DockPanel.Dock="Right">Tempo: 00:00</TextBlock>
+                    <TextBlock x:Name="Project1Time" FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center" DockPanel.Dock="Right">Tempo: 00:00</TextBlock>
                 </DockPanel>
                 <Separator/>
 
