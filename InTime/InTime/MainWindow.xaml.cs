@@ -124,17 +124,6 @@ namespace InTime
             inTimeIcon.Text = "Progetto 1: " + elapsedTime;
         }
 
-        private void RunTime()
-        {
-            timeTracker = new TimeTracker(1);
-            timeTracker.Start();
-            //TimeSpan ts = timeProject.Elapsed;
-            //string elapsedTime = string.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds);
-            //timeProject.Start();
-            //TimeTextBlock.Text = elapsedTime;
-        }
-
-
         /*-------------------------------------------------------------- TASTO PROGETTO 2 --------------------------------------------------------------*/
 
         // test dispatcher

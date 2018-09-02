@@ -13,10 +13,13 @@ namespace InTime.Logic
         private DateTime trackingDate;
         private TimeSpan startingTime;
         private int projectId;
+        private int personId;
+        inTimeDbEntities intimeDb = new inTimeDbEntities();
 
-        public TimeTracker(int projectId)
+        public TimeTracker(int projectId, int personId)
         {
             this.projectId = projectId;
+            this.personId = personId;
         }
 
         public void Start()
@@ -45,8 +48,16 @@ namespace InTime.Logic
             if (this.IsRunning)
             {
                 // registrare sul database
-
+                InTime.TimeTrack timeTrack = new TimeTrack();
                 TimeSpan trackedTime = stopwatch.Elapsed + startingTime;
+                timeTrack.PersonId = personId;
+                timeTrack.ProjectId = projectId;
+                timeTrack.WorkTime = trackedTime;
+                timeTrack.WorkDate = trackingDate;
+
+                intimeDb.TimeTracks.Add(timeTrack);
+                intimeDb.SaveChanges();
+
                 return trackedTime;
             } else
             {

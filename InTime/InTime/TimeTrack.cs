@@ -19,6 +19,7 @@ namespace InTime
         public int PersonId { get; set; }
         public Nullable<int> AssignedTime { get; set; }
         public System.TimeSpan WorkTime { get; set; }
+        public System.DateTime WorkDate { get; set; }
     
         public virtual Person Person { get; set; }
         public virtual Project Project { get; set; }
