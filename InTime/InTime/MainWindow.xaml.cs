@@ -27,13 +27,16 @@ namespace InTime
     public partial class MainWindow : Window
     {
         NotifyIcon inTimeIcon = new NotifyIcon();
-        Stopwatch timeProject1 = new Stopwatch();
-        Stopwatch timeProject2 = new Stopwatch();
-        TimeTracker timeTracker;
+        private Stopwatch project1_stopwatch;
+        private Stopwatch project2_stopwatch;
+        private TimeTracker timeTracker;
+        private DispatcherTimer secondstimer;
+        private DispatcherTimer minutesTimer;
 
         public MainWindow()
         {
             InitializeComponent();
+            InitalizeTrackers();
             this.Loaded += new RoutedEventHandler(WindowPositioned);
             this.Hide();
 
@@ -109,8 +112,8 @@ namespace InTime
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_Tick1;
             timer.Start();
-            timeProject1.Start();
-            timeProject2.Stop();
+            project1_stopwatch.Start();
+            project2_stopwatch.Stop();
 
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/PlayingIcon.ico");
             inTimeIcon.Text = "Progetto 1: 00:00";
@@ -118,7 +121,7 @@ namespace InTime
 
         void timer_Tick1(object sender, EventArgs e)
         {
-            TimeSpan ts = timeProject1.Elapsed;
+            TimeSpan ts = project1_stopwatch.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds);
             Project1Time.Text = elapsedTime;
             inTimeIcon.Text = "Progetto 1: " + elapsedTime;
@@ -130,24 +133,19 @@ namespace InTime
 
         private void TimeProject2_Click(object sender, RoutedEventArgs e)
         {
-            DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += timer_Tick2;
-            timer.Start();
-            timeProject2.Start();
-            timeProject1.Stop();
+            secondstimer.Start();
+            minutesTimer.Start();
+
+            timeTracker = new TimeTracker(1, 1);
+            Project2Time.Text = timeTracker.Start();
+
+            project2_stopwatch.Start();
+            project1_stopwatch.Stop();
 
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/PlayingIcon.ico");
-            
         }
 
-        void timer_Tick2(object sender, EventArgs e)
-        {
-            TimeSpan ts = timeProject2.Elapsed;
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds);
-            Project2Time.Text = elapsedTime;
-            inTimeIcon.Text = "Progetto 2: " + elapsedTime;
-        }
+
 
         /*-------------------------------------------------------------- TASTO STOP --------------------------------------------------------------*/
 
@@ -155,14 +153,46 @@ namespace InTime
         {
             // TO DO: metodo per fermare il timer
             //Console.WriteLine(timeTracker.Update().ToString());
-            //timeTracker.Stop();
+            timeTracker.Stop();
+            secondstimer.Stop();
+            minutesTimer.Stop();
 
-            timeProject1.Stop();
-            timeProject2.Stop();
+            project1_stopwatch.Stop();
+            project2_stopwatch.Stop();
+
+
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/StoppedIcon.ico");
             inTimeIcon.Text = "Timer fermo";
         }
 
+
+        /*-------------------------------------------------------------- TRACKERS --------------------------------------------------------------*/
+
+        private void InitalizeTrackers()
+        {
+            project1_stopwatch = new Stopwatch();
+            project2_stopwatch = new Stopwatch();
+
+            secondstimer = new DispatcherTimer();
+            secondstimer.Interval = TimeSpan.FromSeconds(1);
+            secondstimer.Tick += time_UpdateUI;
+
+            minutesTimer = new DispatcherTimer();
+            minutesTimer.Interval = TimeSpan.FromMinutes(1);
+            minutesTimer.Tick += timer_UpdateDataBase;
+        }
+
+        void timer_UpdateDataBase(object sender, EventArgs e)
+        {
+            timeTracker.Update();
+        }
+
+        void time_UpdateUI(object sender, EventArgs e)
+        {
+            string elapsedTime = timeTracker.UpdateSecond();
+            Project2Time.Text = elapsedTime;
+            inTimeIcon.Text = "Progetto 2: " + elapsedTime;
+        }
 
     }
 }

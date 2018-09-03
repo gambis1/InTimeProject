@@ -24,6 +24,9 @@ namespace InTime
         public string ProjectName { get; set; }
         public Nullable<System.TimeSpan> ProjectAssignedTime { get; set; }
         public string Description { get; set; }
+        public Nullable<System.DateTime> DateCreation { get; set; }
+        public string Customer { get; set; }
+        public bool Active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TimeTrack> TimeTracks { get; set; }

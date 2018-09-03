@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,11 @@ namespace InTime.Logic
     class TimeTracker
     {
         private Stopwatch stopwatch = new Stopwatch();
-        private DateTime trackingDate;
         private TimeSpan startingTime;
+        private int trackerId;
         private int projectId;
         private int personId;
-        inTimeDbEntities intimeDb = new inTimeDbEntities();
+        private inTimeDbEntities intimeDb = new inTimeDbEntities();
 
         public TimeTracker(int projectId, int personId)
         {
@@ -22,60 +23,81 @@ namespace InTime.Logic
             this.personId = personId;
         }
 
-        public void Start()
+        public string Start()
         {
-            // TO DO: query sul nome del progetto: 'latestDate' = ultima data registrata
+            DbSet<TimeTrack> timeTracksList = intimeDb.TimeTracks;
 
-            trackingDate = new DateTime(2018, 9, 1); // DEBUG,HARDCODED
+            DateTime trackingDate =
+                 (from TimeTrack in timeTracksList
+                 orderby TimeTrack.Id descending
+                 where TimeTrack.ProjectId == projectId
+                 where TimeTrack.PersonId == personId
+                 select TimeTrack.WorkDate).First();
+            startingTime = new TimeSpan(0, 0, 0);
 
             if (trackingDate.Date != DateTime.Now.Date) // data non presente in database: nuova data, startingtime = 0
             {
                 DateTime newDate = DateTime.Now.Date;
-                startingTime = new TimeSpan(0, 0, 0);
-            } else // data già presente: query sul tempo già tracciato
-            {
-                // TO DO: query per tempo tracciato
 
-                startingTime = new TimeSpan(1, 30, 0); // DEBUG,HARDCODED
+                TimeTrack newRecord = new TimeTrack();
+                newRecord.WorkDate = newDate;
+                newRecord.WorkTime = startingTime;
+
+                intimeDb.TimeTracks.Add(newRecord);
+                intimeDb.SaveChanges();
+                trackerId = newRecord.Id;
+                //trackerId =
+                //    (from TimeTrack in timeTracksList
+                //     where TimeTrack.ProjectId == projectId
+                //     where TimeTrack.PersonId == personId
+                //     where TimeTrack.WorkDate == );
             }
+            else // data già presente: query sul tempo già tracciato
+            {
+                TimeTrack record =
+                (from TimeTrack in timeTracksList
+                 orderby TimeTrack.Id descending
+                 where TimeTrack.ProjectId == projectId
+                 where TimeTrack.PersonId == personId
 
+                 where TimeTrack.WorkDate == trackingDate
+                 select TimeTrack).First(); // tempo relativo alla data 'trackingDate'
+
+                startingTime = record.WorkTime;
+                trackerId = record.Id;
+            }
             stopwatch.Reset();
             stopwatch.Start();
+
+            return startingTime.ToString();
         }
 
-        public TimeSpan Update()
+        public void Update()
         {
-            if (this.IsRunning)
-            {
-                // registrare sul database
-                InTime.TimeTrack timeTrack = new TimeTrack();
-                TimeSpan trackedTime = stopwatch.Elapsed + startingTime;
-                timeTrack.PersonId = personId;
-                timeTrack.ProjectId = projectId;
-                timeTrack.WorkTime = trackedTime;
-                timeTrack.WorkDate = trackingDate;
+            DbSet<TimeTrack> timeTracksList = intimeDb.TimeTracks;
 
-                intimeDb.TimeTracks.Add(timeTrack);
-                intimeDb.SaveChanges();
+            TimeTrack record =
+                (from TimeTrack in timeTracksList
+                where TimeTrack.Id == trackerId
+                select TimeTrack).First();
 
-                return trackedTime;
-            } else
-            {
-                return startingTime;
-            }
+            record.WorkTime += stopwatch.Elapsed;
+            intimeDb.SaveChanges();
         }
 
         public void Stop()
         {
-            if (this.IsRunning) {
+            if (stopwatch.IsRunning)
+            {
                 Update();
                 stopwatch.Stop();
             }
         }
 
-        public bool IsRunning
+        public string UpdateSecond()
         {
-            get { return stopwatch.IsRunning; }
+            TimeSpan ts = stopwatch.Elapsed + startingTime;
+            return String.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds);
         }
     }
 }
