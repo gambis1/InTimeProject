@@ -32,7 +32,8 @@ namespace InTime.Logic
                  orderby TimeTrack.Id descending
                  where TimeTrack.ProjectId == projectId
                  where TimeTrack.PersonId == personId
-                 select TimeTrack.WorkDate).First();
+                 select TimeTrack.WorkDate).FirstOrDefault();
+
             startingTime = new TimeSpan(0, 0, 0);
 
             if (trackingDate.Date != DateTime.Now.Date) // data non presente in database: nuova data, startingtime = 0
@@ -42,6 +43,8 @@ namespace InTime.Logic
                 TimeTrack newRecord = new TimeTrack();
                 newRecord.WorkDate = newDate;
                 newRecord.WorkTime = startingTime;
+                newRecord.PersonId = personId;
+                newRecord.ProjectId = projectId;
 
                 intimeDb.TimeTracks.Add(newRecord);
                 intimeDb.SaveChanges();
@@ -59,14 +62,12 @@ namespace InTime.Logic
                  orderby TimeTrack.Id descending
                  where TimeTrack.ProjectId == projectId
                  where TimeTrack.PersonId == personId
-
                  where TimeTrack.WorkDate == trackingDate
                  select TimeTrack).First(); // tempo relativo alla data 'trackingDate'
 
                 startingTime = record.WorkTime;
                 trackerId = record.Id;
             }
-            stopwatch.Reset();
             stopwatch.Start();
 
             return startingTime.ToString();

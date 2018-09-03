@@ -18,6 +18,8 @@ using InTime.User;
 using InTime.Admin;
 using InTime.Logic;
 using System.Windows.Threading;
+using System.Data.Entity;
+using System.Runtime.InteropServices;
 
 namespace InTime
 {
@@ -28,7 +30,6 @@ namespace InTime
     {
         NotifyIcon inTimeIcon = new NotifyIcon();
         private Stopwatch project1_stopwatch;
-        private Stopwatch project2_stopwatch;
         private TimeTracker timeTracker;
         private DispatcherTimer secondstimer;
         private DispatcherTimer minutesTimer;
@@ -95,7 +96,8 @@ namespace InTime
             MessageBoxResult result = System.Windows.MessageBox.Show("Vuoi uscire dall'applicazione?", "Esci", MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
-                timeTracker.Update();
+                timeTracker.Stop();
+                project1_stopwatch.Stop();
                 inTimeIcon.Dispose(); // fa scomparire l'icona dalla barra
                 System.Windows.Application.Current.Shutdown();
             } else
@@ -114,7 +116,9 @@ namespace InTime
             timer.Tick += timer_Tick1;
             timer.Start();
             project1_stopwatch.Start();
-            project2_stopwatch.Stop();
+
+            timeTracker.Stop();
+
 
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/PlayingIcon.ico");
             inTimeIcon.Text = "Progetto 1: 00:00";
@@ -137,10 +141,10 @@ namespace InTime
             secondstimer.Start();
             minutesTimer.Start();
 
+
             timeTracker = new TimeTracker(1, 1);
             Project2Time.Text = timeTracker.Start();
 
-            project2_stopwatch.Start();
             project1_stopwatch.Stop();
 
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/PlayingIcon.ico");
@@ -152,14 +156,17 @@ namespace InTime
 
         private void StopTimer_Click(object sender, RoutedEventArgs e)
         {
-            // TO DO: metodo per fermare il timer
-            //Console.WriteLine(timeTracker.Update().ToString());
+            StopAll();
+        }
+
+        private void StopAll()
+        {
             timeTracker.Stop();
             secondstimer.Stop();
             minutesTimer.Stop();
 
             project1_stopwatch.Stop();
-            project2_stopwatch.Stop();
+            timeTracker.Stop();
 
 
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/StoppedIcon.ico");
@@ -172,7 +179,6 @@ namespace InTime
         private void InitalizeTrackers()
         {
             project1_stopwatch = new Stopwatch();
-            project2_stopwatch = new Stopwatch();
 
             secondstimer = new DispatcherTimer();
             secondstimer.Interval = TimeSpan.FromSeconds(1);
@@ -186,6 +192,10 @@ namespace InTime
         void timer_UpdateDataBase(object sender, EventArgs e)
         {
             timeTracker.Update();
+            if (GetIdleTime() >= 300000)
+            {
+                StopAll();
+            }
         }
 
         void time_UpdateUI(object sender, EventArgs e)
@@ -195,5 +205,21 @@ namespace InTime
             inTimeIcon.Text = "Progetto 2: " + elapsedTime;
         }
 
+        [DllImport("User32.dll")]
+        private static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
+
+        internal struct LASTINPUTINFO
+        {
+            public uint cbSize;
+            public uint dwTime;
+        }
+
+        public static uint GetIdleTime()
+        {
+            LASTINPUTINFO lastInput = new LASTINPUTINFO();
+            lastInput.cbSize = (uint)Marshal.SizeOf(lastInput);
+            GetLastInputInfo(ref lastInput);
+            return (uint)Environment.TickCount - lastInput.dwTime);
+        }
     }
 }
