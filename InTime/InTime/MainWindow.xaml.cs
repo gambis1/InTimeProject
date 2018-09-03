@@ -95,6 +95,7 @@ namespace InTime
             MessageBoxResult result = System.Windows.MessageBox.Show("Vuoi uscire dall'applicazione?", "Esci", MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
+                timeTracker.Update();
                 inTimeIcon.Dispose(); // fa scomparire l'icona dalla barra
                 System.Windows.Application.Current.Shutdown();
             } else
