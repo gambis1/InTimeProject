@@ -35,6 +35,7 @@ namespace InTime.Admin
             {
                 InTime.Person newPerson = new InTime.Person();
                 newPerson.PersonName = name;
+                newPerson.AccessCode = Guid.NewGuid();
 
                 intimeDb.People.Add(newPerson);
                 intimeDb.SaveChanges();
