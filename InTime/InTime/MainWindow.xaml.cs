@@ -219,7 +219,7 @@ namespace InTime
             LASTINPUTINFO lastInput = new LASTINPUTINFO();
             lastInput.cbSize = (uint)Marshal.SizeOf(lastInput);
             GetLastInputInfo(ref lastInput);
-            return (uint)Environment.TickCount - lastInput.dwTime);
+            return (uint)Environment.TickCount - lastInput.dwTime;
         }
     }
 }
