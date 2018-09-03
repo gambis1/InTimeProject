@@ -76,6 +76,14 @@ namespace InTime
             this.Hide();
         }
 
+        public static bool IsWindowOpen<T>(string name = null) where T : Window
+        {
+            var windows = System.Windows.Application.Current.Windows.OfType<T>();
+            return string.IsNullOrEmpty(name) ?
+                System.Windows.Application.Current.Windows.OfType<T>().Any() :
+                System.Windows.Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
+        }
+
 
         /*-------------------------------------------------------------- TASTI MENU --------------------------------------------------------------*/
 
@@ -117,8 +125,7 @@ namespace InTime
             timer.Start();
             project1_stopwatch.Start();
 
-            timeTracker.Stop();
-
+            timeTracker.Stop(); // ricordiamoci che è provvisorio e non va
 
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/PlayingIcon.ico");
             inTimeIcon.Text = "Progetto 1: 00:00";
@@ -134,22 +141,18 @@ namespace InTime
 
         /*-------------------------------------------------------------- TASTO PROGETTO 2 --------------------------------------------------------------*/
 
-        // test dispatcher
-
         private void TimeProject2_Click(object sender, RoutedEventArgs e)
         {
             secondstimer.Start();
             minutesTimer.Start();
 
-
             timeTracker = new TimeTracker(1, 1);
             Project2Time.Text = timeTracker.Start();
 
-            project1_stopwatch.Stop();
+            project1_stopwatch.Stop(); // TO DO: da dinamizzare
 
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/PlayingIcon.ico");
         }
-
 
 
         /*-------------------------------------------------------------- TASTO STOP --------------------------------------------------------------*/
@@ -159,24 +162,22 @@ namespace InTime
             StopAll();
         }
 
-        private void StopAll()
+        private void StopAll() // stoppa tutti i timer
         {
             timeTracker.Stop();
             secondstimer.Stop();
             minutesTimer.Stop();
-
             project1_stopwatch.Stop();
             timeTracker.Stop();
-
 
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/StoppedIcon.ico");
             inTimeIcon.Text = "Timer fermo";
         }
 
 
-        /*-------------------------------------------------------------- TRACKERS --------------------------------------------------------------*/
+        /*-------------------------------------------------------------- TIME TRACKERS --------------------------------------------------------------*/
 
-        private void InitalizeTrackers()
+        private void InitalizeTrackers() // avvia tutto
         {
             project1_stopwatch = new Stopwatch();
 
@@ -187,39 +188,30 @@ namespace InTime
             minutesTimer = new DispatcherTimer();
             minutesTimer.Interval = TimeSpan.FromMinutes(1);
             minutesTimer.Tick += timer_UpdateDataBase;
+            minutesTimer.Tick += timer_checkIdle;
         }
 
-        void timer_UpdateDataBase(object sender, EventArgs e)
-        {
-            timeTracker.Update();
-            if (GetIdleTime() >= 300000)
-            {
-                StopAll();
-            }
-        }
-
-        void time_UpdateUI(object sender, EventArgs e)
+        void time_UpdateUI(object sender, EventArgs e) // aggiorna il timer dell'interfaccia
         {
             string elapsedTime = timeTracker.UpdateSecond();
             Project2Time.Text = elapsedTime;
             inTimeIcon.Text = "Progetto 2: " + elapsedTime;
         }
 
-        [DllImport("User32.dll")]
-        private static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
-
-        internal struct LASTINPUTINFO
+        void timer_UpdateDataBase(object sender, EventArgs e) // aggiorna tempo nel database
         {
-            public uint cbSize;
-            public uint dwTime;
+            timeTracker.Update();
         }
 
-        public static uint GetIdleTime()
+        void timer_checkIdle(object sender, EventArgs e) // verifica inattività superiore ai 5 minuti
         {
-            LASTINPUTINFO lastInput = new LASTINPUTINFO();
-            lastInput.cbSize = (uint)Marshal.SizeOf(lastInput);
-            GetLastInputInfo(ref lastInput);
-            return (uint)Environment.TickCount - lastInput.dwTime;
+            if (IdleDetection.GetIdleTime() >= 300000)
+            {
+                StopAll();
+
+                MessageBoxResult idle = System.Windows.MessageBox.Show("A causa di un'inattività prolungata, il timer del progetto è stato arrestato. Clicca nuovamente su un progetto per ricominciare a tracciare il tempo di lavoro.", "InTime", MessageBoxButton.OK);
+                this.Show();
+            }
         }
     }
 }

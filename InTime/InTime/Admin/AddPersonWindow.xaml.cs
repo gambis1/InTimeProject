@@ -24,6 +24,7 @@ namespace InTime.Admin
 
         public AddPersonWindow()
         {
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
         }
 

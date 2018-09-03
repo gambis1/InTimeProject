@@ -21,6 +21,7 @@ namespace InTime.User
     {
         public UserWindow()
         {
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
         }
     }
