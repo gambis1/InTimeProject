@@ -27,6 +27,7 @@ namespace InTime.User
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
+            GetDbData();
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
