@@ -105,15 +105,15 @@ namespace InTime.Admin
 
             var workTimeList = (from TimeTrack in timeTracksDBSet
                          where selectedProject.Id == TimeTrack.ProjectId
-                         select TimeTrack.WorkTime).ToList(); // VARI id delle assegnazioni (a persone) di quel SINGOLO progetto
+                         select TimeTrack.WorkTime).Cast<long>().ToList(); // VARI id delle assegnazioni (a persone) di quel SINGOLO progetto
 
-            TimeSpan totalWorkTime = new TimeSpan();
-            foreach(TimeSpan times in workTimeList)
+            long totalWorkTime = 0;
+            foreach(long ticks in workTimeList)
             {
-                totalWorkTime += times;
+                totalWorkTime += ticks;
             }
 
-            WorkTime.Text = totalWorkTime.ToString(); // tempo di lavoro totale effettuato
+            WorkTime.Text = TimeSpan.FromTicks(totalWorkTime).ToString(); ; // tempo di lavoro totale effettuato
 
             // TO DO: aggiungere metodo che aggiorna anche la datagrid
 

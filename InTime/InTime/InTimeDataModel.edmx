@@ -4,15 +4,18 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="intimedbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="InTimeDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Assignment">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="ProjectId" />
+            <PropertyRef Name="PersonId" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="ProjectId" Type="int" Nullable="false" />
           <Property Name="PersonId" Type="int" Nullable="false" />
-          <Property Name="AssignedTime" Type="time" Precision="7" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="AssignedTime" Type="bigint" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -28,22 +31,22 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProjectName" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="ProjectAssignedTime" Type="time" Precision="7" />
           <Property Name="Description" Type="varchar(max)" />
           <Property Name="DateCreation" Type="date" />
           <Property Name="Customer" Type="varchar" MaxLength="30" />
           <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="DueDate" Type="date" />
+          <Property Name="ProjectAssignedTime" Type="bigint" />
         </EntityType>
         <EntityType Name="TimeTrack">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="WorkTime" Type="time" Precision="7" Nullable="false" />
           <Property Name="WorkDate" Type="date" />
-          <Property Name="AssignmentId" Type="int" Nullable="false" />
           <Property Name="ProjectId" Type="int" Nullable="false" />
           <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="WorkTime" Type="bigint" />
         </EntityType>
         <Association Name="FK_AssignedProject_ToPerson">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
@@ -69,19 +72,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TimeTrack_ToAssignedProject">
+        <Association Name="FK_TimeTrack_ToProjecId_PersonId">
           <End Role="Assignment" Type="Self.Assignment" Multiplicity="1" />
           <End Role="TimeTrack" Type="Self.TimeTrack" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Assignment">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="ProjectId" />
+              <PropertyRef Name="PersonId" />
             </Principal>
             <Dependent Role="TimeTrack">
-              <PropertyRef Name="AssignmentId" />
+              <PropertyRef Name="ProjectId" />
+              <PropertyRef Name="PersonId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="intimedbModelStoreContainer">
+        <EntityContainer Name="InTimeDbModelStoreContainer">
           <EntitySet Name="Assignment" EntityType="Self.Assignment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
@@ -94,7 +99,7 @@
             <End Role="Project" EntitySet="Project" />
             <End Role="Assignment" EntitySet="Assignment" />
           </AssociationSet>
-          <AssociationSet Name="FK_TimeTrack_ToAssignedProject" Association="Self.FK_TimeTrack_ToAssignedProject">
+          <AssociationSet Name="FK_TimeTrack_ToProjecId_PersonId" Association="Self.FK_TimeTrack_ToProjecId_PersonId">
             <End Role="Assignment" EntitySet="Assignment" />
             <End Role="TimeTrack" EntitySet="TimeTrack" />
           </AssociationSet>
@@ -103,18 +108,21 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="intimedbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="InTimeDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Assignment">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="ProjectId" />
+            <PropertyRef Name="PersonId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="ProjectId" Type="Int32" Nullable="false" />
           <Property Name="PersonId" Type="Int32" Nullable="false" />
-          <Property Name="AssignedTime" Type="Time" Precision="7" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AssignedTime" Type="Int64" />
           <NavigationProperty Name="Person" Relationship="Self.FK_AssignedProject_ToPerson" FromRole="Assignment" ToRole="Person" />
           <NavigationProperty Name="Project" Relationship="Self.FK_AssignedProject_ToProject" FromRole="Assignment" ToRole="Project" />
-          <NavigationProperty Name="TimeTracks" Relationship="Self.FK_TimeTrack_ToAssignedProject" FromRole="Assignment" ToRole="TimeTrack" />
+          <NavigationProperty Name="TimeTracks" Relationship="Self.FK_TimeTrack_ToProjecId_PersonId" FromRole="Assignment" ToRole="TimeTrack" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -131,11 +139,12 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProjectName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ProjectAssignedTime" Type="Time" Precision="7" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="DateCreation" Type="DateTime" Precision="0" />
           <Property Name="Customer" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="DueDate" Type="DateTime" Precision="0" />
+          <Property Name="ProjectAssignedTime" Type="Int64" />
           <NavigationProperty Name="Assignments" Relationship="Self.FK_AssignedProject_ToProject" FromRole="Project" ToRole="Assignment" />
         </EntityType>
         <EntityType Name="TimeTrack">
@@ -143,12 +152,11 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="WorkTime" Type="Time" Nullable="false" Precision="7" />
           <Property Name="WorkDate" Type="DateTime" Precision="0" />
-          <Property Name="AssignmentId" Type="Int32" Nullable="false" />
           <Property Name="ProjectId" Type="Int32" Nullable="false" />
           <Property Name="PersonId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Assignment" Relationship="Self.FK_TimeTrack_ToAssignedProject" FromRole="TimeTrack" ToRole="Assignment" />
+          <Property Name="WorkTime" Type="Int64" />
+          <NavigationProperty Name="Assignment" Relationship="Self.FK_TimeTrack_ToProjecId_PersonId" FromRole="TimeTrack" ToRole="Assignment" />
         </EntityType>
         <Association Name="FK_AssignedProject_ToPerson">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
@@ -174,15 +182,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TimeTrack_ToAssignedProject">
+        <Association Name="FK_TimeTrack_ToProjecId_PersonId">
           <End Role="Assignment" Type="Self.Assignment" Multiplicity="1" />
           <End Role="TimeTrack" Type="Self.TimeTrack" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Assignment">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="ProjectId" />
+              <PropertyRef Name="PersonId" />
             </Principal>
             <Dependent Role="TimeTrack">
-              <PropertyRef Name="AssignmentId" />
+              <PropertyRef Name="ProjectId" />
+              <PropertyRef Name="PersonId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -199,7 +209,7 @@
             <End Role="Project" EntitySet="Projects" />
             <End Role="Assignment" EntitySet="Assignments" />
           </AssociationSet>
-          <AssociationSet Name="FK_TimeTrack_ToAssignedProject" Association="Self.FK_TimeTrack_ToAssignedProject">
+          <AssociationSet Name="FK_TimeTrack_ToProjecId_PersonId" Association="Self.FK_TimeTrack_ToProjecId_PersonId">
             <End Role="Assignment" EntitySet="Assignments" />
             <End Role="TimeTrack" EntitySet="TimeTracks" />
           </AssociationSet>
@@ -209,19 +219,21 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="intimedbModelStoreContainer" CdmEntityContainer="InTimeDbEntities">
+        <EntityContainerMapping StorageEntityContainer="InTimeDbModelStoreContainer" CdmEntityContainer="InTimeDbEntities">
           <EntitySetMapping Name="Assignments">
-            <EntityTypeMapping TypeName="intimedbModel.Assignment">
+            <EntityTypeMapping TypeName="InTimeDbModel.Assignment">
               <MappingFragment StoreEntitySet="Assignment">
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="AssignedTime" ColumnName="AssignedTime" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="People">
-            <EntityTypeMapping TypeName="intimedbModel.Person">
+            <EntityTypeMapping TypeName="InTimeDbModel.Person">
               <MappingFragment StoreEntitySet="Person">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PersonName" ColumnName="PersonName" />
@@ -230,27 +242,27 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Projects">
-            <EntityTypeMapping TypeName="intimedbModel.Project">
+            <EntityTypeMapping TypeName="InTimeDbModel.Project">
               <MappingFragment StoreEntitySet="Project">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
-                <ScalarProperty Name="ProjectAssignedTime" ColumnName="ProjectAssignedTime" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
                 <ScalarProperty Name="Customer" ColumnName="Customer" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="ProjectAssignedTime" ColumnName="ProjectAssignedTime" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TimeTracks">
-            <EntityTypeMapping TypeName="intimedbModel.TimeTrack">
+            <EntityTypeMapping TypeName="InTimeDbModel.TimeTrack">
               <MappingFragment StoreEntitySet="TimeTrack">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="WorkTime" ColumnName="WorkTime" />
                 <ScalarProperty Name="WorkDate" ColumnName="WorkDate" />
-                <ScalarProperty Name="AssignmentId" ColumnName="AssignmentId" />
                 <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="WorkTime" ColumnName="WorkTime" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

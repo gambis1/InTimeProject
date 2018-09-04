@@ -15,11 +15,10 @@ namespace InTime
     public partial class TimeTrack
     {
         public int Id { get; set; }
-        public System.TimeSpan WorkTime { get; set; }
         public Nullable<System.DateTime> WorkDate { get; set; }
-        public int AssignmentId { get; set; }
         public int ProjectId { get; set; }
         public int PersonId { get; set; }
+        public Nullable<long> WorkTime { get; set; }
     
         public virtual Assignment Assignment { get; set; }
     }

@@ -139,7 +139,7 @@ namespace InTime
             secondstimer.Start();
             minutesTimer.Start();
 
-            timeTracker = new TimeTracker(1, 1, 1);
+            timeTracker = new TimeTracker(10, 1);
             Project2Time.Text = timeTracker.Start();
 
             project1_stopwatch.Stop(); // TO DO: da dinamizzare

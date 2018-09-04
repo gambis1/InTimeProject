@@ -16,13 +16,11 @@ namespace InTime.Logic
         private int projectId;
         private int personId;
         private InTimeDbEntities intimeDb = new InTimeDbEntities();
-        private int assignmentId;
 
-        public TimeTracker(int projectId, int personId, int assignmentId)
+        public TimeTracker(int projectId, int personId)
         {
             this.projectId = projectId;
             this.personId = personId;
-            this.assignmentId = assignmentId;
         }
 
         public string Start()
@@ -44,10 +42,9 @@ namespace InTime.Logic
 
                 TimeTrack newRecord = new TimeTrack();
                 newRecord.WorkDate = newDate;
-                newRecord.WorkTime = startingTime;
+                newRecord.WorkTime = startingTime.Ticks;
                 newRecord.PersonId = personId;
                 newRecord.ProjectId = projectId;
-                newRecord.AssignmentId = assignmentId;
 
                 intimeDb.TimeTracks.Add(newRecord);
                 intimeDb.SaveChanges();
@@ -68,7 +65,7 @@ namespace InTime.Logic
                  where TimeTrack.WorkDate == trackingDate
                  select TimeTrack).First(); // tempo relativo alla data 'trackingDate'
 
-                startingTime = record.WorkTime;
+                startingTime = new TimeSpan((long)record.WorkTime);
                 trackerId = record.Id;
             }
             stopwatch.Start();
@@ -85,7 +82,7 @@ namespace InTime.Logic
                 where TimeTrack.Id == trackerId
                 select TimeTrack).First();
 
-            record.WorkTime += stopwatch.Elapsed;
+            record.WorkTime += stopwatch.Elapsed.Ticks;
             intimeDb.SaveChanges();
         }
 

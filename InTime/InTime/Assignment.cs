@@ -20,10 +20,12 @@ namespace InTime
             this.TimeTracks = new HashSet<TimeTrack>();
         }
     
-        public int Id { get; set; }
         public int ProjectId { get; set; }
         public int PersonId { get; set; }
-        public Nullable<System.TimeSpan> AssignedTime { get; set; }
+        public bool Active { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
+        public string Description { get; set; }
+        public Nullable<long> AssignedTime { get; set; }
     
         public virtual Person Person { get; set; }
         public virtual Project Project { get; set; }

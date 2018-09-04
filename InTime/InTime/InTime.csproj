@@ -73,22 +73,22 @@
       <DependentUpon>AddPersonWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Assignment.cs">
-      <DependentUpon>InTimeModel.tt</DependentUpon>
+      <DependentUpon>InTimeDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="InTimeModel.Context.cs">
+    <Compile Include="InTimeDataModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>InTimeModel.Context.tt</DependentUpon>
+      <DependentUpon>InTimeDataModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="InTimeModel.cs">
+    <Compile Include="InTimeDataModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>InTimeModel.tt</DependentUpon>
+      <DependentUpon>InTimeDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="InTimeModel.Designer.cs">
+    <Compile Include="InTimeDataModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>InTimeModel.edmx</DependentUpon>
+      <DependentUpon>InTimeDataModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Logic\IdleDetection.cs" />
     <Compile Include="Logic\TimeTracker.cs" />
@@ -96,16 +96,16 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Person.cs">
-      <DependentUpon>InTimeModel.tt</DependentUpon>
+      <DependentUpon>InTimeDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Project.cs">
-      <DependentUpon>InTimeModel.tt</DependentUpon>
+      <DependentUpon>InTimeDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TimeTrack.cs">
-      <DependentUpon>InTimeModel.tt</DependentUpon>
+      <DependentUpon>InTimeDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="User\UserWindow.xaml.cs">
       <DependentUpon>UserWindow.xaml</DependentUpon>
@@ -157,12 +157,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="InTimeModel.edmx">
+    <EntityDeploy Include="InTimeDataModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>InTimeModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>InTimeDataModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="InTimeModel.edmx.diagram">
-      <DependentUpon>InTimeModel.edmx</DependentUpon>
+    <None Include="InTimeDataModel.edmx.diagram">
+      <DependentUpon>InTimeDataModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -182,15 +182,15 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="InTimeModel.Context.tt">
+    <Content Include="InTimeDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>InTimeModel.edmx</DependentUpon>
-      <LastGenOutput>InTimeModel.Context.cs</LastGenOutput>
+      <DependentUpon>InTimeDataModel.edmx</DependentUpon>
+      <LastGenOutput>InTimeDataModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="InTimeModel.tt">
+    <Content Include="InTimeDataModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>InTimeModel.edmx</DependentUpon>
-      <LastGenOutput>InTimeModel.cs</LastGenOutput>
+      <DependentUpon>InTimeDataModel.edmx</DependentUpon>
+      <LastGenOutput>InTimeDataModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

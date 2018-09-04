@@ -13,6 +13,9 @@
                 <Separator/>
                 <MenuItem Header="Chiudi" Click="Close_Click" InputGestureText="Alt+F4" />
             </MenuItem>
+            <MenuItem Header="Database">
+                <MenuItem Header="Aggiungi persona" Click="AddPerson_Click" />
+            </MenuItem>
         </Menu>
         <DockPanel Name="SideContainer" Margin="10,0,10,10" DockPanel.Dock="Left" LastChildFill="True" Width="200">
             <Label DockPanel.Dock="Top">Lista progetti</Label>
@@ -51,17 +54,19 @@
                     <TextBlock x:Name="TextBlockActive" Grid.Row="0" VerticalAlignment="Bottom" Height="16" Margin="48,0,0,5" Grid.Column="3" />
                 </Grid>
             </GroupBox>
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="10" HorizontalAlignment="Left">
-                <ComboBox x:Name="ComboPerson" Width="162" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                <Button x:Name="AddGridPerson" Width="26" Height="26" Margin="10,0,0,0" Content="+" Click="AddGridPerson_Click" />
-                <Button x:Name="AddPerson" Width="111" Height="26" Margin="200,0,0,0" FontWeight="Bold" Click="AddPerson_Click" Content="Aggiungi Persona"/>
-            </StackPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <StackPanel Orientation="Horizontal" Margin="0 10" HorizontalAlignment="Left" DockPanel.Dock="Left">
+                    <ComboBox x:Name="ComboPerson" Width="162" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                    <Button x:Name="AddGridPerson" Width="90" Height="25" Margin="10,0,0,0" Content="Aggiungi" Click="AddGridPerson_Click" />
+                </StackPanel>
+                <Button Width="90" Height="25" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="10 0"></Button>
+            </DockPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="10">
                 <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">OK</Button>
                 <Button x:Name="CancelButton" VerticalAlignment="Bottom" Margin="10" Height="25" Width="90" Click="CancelButton_Click">Annulla</Button>
                 <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">Applica</Button>
             </StackPanel>
-            <DataGrid Name="NameGrid" AutoGenerateColumns="False" GridLinesVisibility="All" ItemsSource="{Binding}" Margin="0,92,0,-5">
+            <DataGrid Name="NameGrid" AutoGenerateColumns="False" GridLinesVisibility="All" ItemsSource="{Binding}" >
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="ColumnName" Header="Nome" Width="300" Binding="{Binding name}" />
                     <DataGridTextColumn x:Name="ColumnTime" Header="Tempo" Width="400" Binding="{Binding time}"/>
