@@ -10,12 +10,13 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
                 <MenuItem Header="Impostazioni" Click="Settings_Click" />
+                <Separator/>
                 <MenuItem Header="Chiudi" Click="Close_Click" InputGestureText="Alt+F4" />
             </MenuItem>
         </Menu>
         <DockPanel Name="SideContainer" Margin="10,0,10,10" DockPanel.Dock="Left" LastChildFill="True" Width="200">
             <Label DockPanel.Dock="Top">Lista progetti</Label>
-            <Button x:Name="NewProjectButton" DockPanel.Dock="Bottom" Content="Aggiungi" Click="NewProjectButton_Click" Height="25" Width="90" HorizontalAlignment="Right" Margin="0,10,10,0"/>
+            <Button x:Name="NewProjectButton" DockPanel.Dock="Bottom" Content="Aggiungi nuovo progetto" Click="NewProjectButton_Click" Height="25" HorizontalAlignment="Stretch" Margin="0 5 0 0"/>
             <ListBox x:Name="ProjectList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
         </DockPanel>
         <DockPanel Name="DetailContainer" DockPanel.Dock="Right">

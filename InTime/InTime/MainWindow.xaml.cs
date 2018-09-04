@@ -33,7 +33,6 @@ namespace InTime
         private TimeTracker timeTracker;
         private DispatcherTimer secondstimer;
         private DispatcherTimer minutesTimer;
-        private AdministratorWindow administratorWindow;
 
         public MainWindow()
         {
@@ -77,14 +76,6 @@ namespace InTime
             this.Hide();
         }
 
-        public static bool IsWindowOpen<T>(string name = null) where T : Window
-        {
-            var windows = System.Windows.Application.Current.Windows.OfType<T>();
-            return string.IsNullOrEmpty(name) ?
-                System.Windows.Application.Current.Windows.OfType<T>().Any() :
-                System.Windows.Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
-        }
-
 
         /*-------------------------------------------------------------- TASTI MENU --------------------------------------------------------------*/
 
@@ -95,8 +86,7 @@ namespace InTime
 
         private void UserButton_Click(object sender, RoutedEventArgs e)
         {
-            UserWindow userWindow = new UserWindow();
-            userWindow.Show();
+            UserWindow.IsOpened();
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
