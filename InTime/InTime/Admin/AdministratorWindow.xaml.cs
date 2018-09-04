@@ -23,6 +23,7 @@ namespace InTime.Admin
     public partial class AdministratorWindow : Window
     {
         inTimeDbEntities intimeDb = new inTimeDbEntities();
+        private static AdministratorWindow administratorWindow;
 
         public AdministratorWindow()
         {
@@ -30,6 +31,16 @@ namespace InTime.Admin
             InitializeComponent();
             GetDbData();
             GetDbPerson();
+        }
+
+        public static void IsOpened()
+        {
+            if (administratorWindow == null)
+            {
+                administratorWindow = new AdministratorWindow();
+                administratorWindow.Closed += (sender, args) => administratorWindow = null;
+                administratorWindow.Show();
+            }
         }
 
         // aggiungere un nuovo progetto al database
@@ -53,7 +64,7 @@ namespace InTime.Admin
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            this.Close();
         }
 
         private void GetDbData()

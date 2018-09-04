@@ -33,6 +33,7 @@ namespace InTime
         private TimeTracker timeTracker;
         private DispatcherTimer secondstimer;
         private DispatcherTimer minutesTimer;
+        private AdministratorWindow administratorWindow;
 
         public MainWindow()
         {
@@ -89,8 +90,7 @@ namespace InTime
 
         private void AdministratorButton_Click(object sender, RoutedEventArgs e)
         {
-            AdministratorWindow administratorWindow = new AdministratorWindow();
-            administratorWindow.Show();
+            AdministratorWindow.IsOpened();
         }
 
         private void UserButton_Click(object sender, RoutedEventArgs e)
