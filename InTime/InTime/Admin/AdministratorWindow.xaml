@@ -40,15 +40,15 @@
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Height="26">Descrizione:</Label>
                     <TextBlock x:Name="Description" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" TextWrapping="Wrap" VerticalAlignment="Center" Height="16" Margin="0,6,0,4" />
                     <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Height="26">Tempo di lavoro stimato:</Label>
-                    <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Height="16" Margin="10,5,5,5">120:00</TextBlock>
+                    <TextBlock x:Name="TextBlockEstimatedTime" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Height="16" Margin="10,5,5,5">0:00</TextBlock>
                     <Label Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Height="26">Tempo di lavoro totale:</Label>
                     <TextBlock x:Name="WorkTime" Grid.Row="3" Grid.Column="3" VerticalAlignment="Center" Height="16" Margin="0,5"></TextBlock>
                     <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Height="26" Margin="5,0,88,0" Content="Cliente:"/>
                     <TextBlock x:Name="TextBlockCustomers" Grid.Row="0" VerticalAlignment="Center" Height="16" Margin="62,5,0,5" Grid.Column="1" />
                     <Label Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Height="26" Margin="0,0,78,0" Content="Data creazione:" RenderTransformOrigin="0.235,0.577"/>
-                    <TextBlock x:Name="TextBlockdateCreation" Grid.Row="0" VerticalAlignment="Center" Height="16" Margin="96,5,0,5" Grid.Column="2" />
+                    <TextBlock x:Name="TextBlockDateCreation" Grid.Row="0" VerticalAlignment="Center" Height="16" Margin="96,5,0,5" Grid.Column="2" />
                     <Label Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Height="26" Margin="0,0,47,0" Content="Attivo:"/>
-                    <TextBlock x:Name="TextBlockdateCreation_Copy" Grid.Row="0" VerticalAlignment="Bottom" Height="16" Margin="48,0,0,5" Grid.Column="3" />
+                    <TextBlock x:Name="TextBlockActive" Grid.Row="0" VerticalAlignment="Bottom" Height="16" Margin="48,0,0,5" Grid.Column="3" />
                 </Grid>
             </GroupBox>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="10" HorizontalAlignment="Left">

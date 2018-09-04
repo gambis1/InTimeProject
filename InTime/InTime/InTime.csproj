@@ -72,20 +72,23 @@
     <Compile Include="Admin\AddPersonWindow.xaml.cs">
       <DependentUpon>AddPersonWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppModel.Context.tt</DependentUpon>
+    <Compile Include="Assignment.cs">
+      <DependentUpon>InTimeModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="AppModel.cs">
+    <Compile Include="InTimeModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AppModel.tt</DependentUpon>
+      <DependentUpon>InTimeModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="AppModel.Designer.cs">
+    <Compile Include="InTimeModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AppModel.edmx</DependentUpon>
+      <DependentUpon>InTimeModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InTimeModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InTimeModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Logic\IdleDetection.cs" />
     <Compile Include="Logic\TimeTracker.cs" />
@@ -93,16 +96,16 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Person.cs">
-      <DependentUpon>AppModel.tt</DependentUpon>
+      <DependentUpon>InTimeModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Project.cs">
-      <DependentUpon>AppModel.tt</DependentUpon>
+      <DependentUpon>InTimeModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TimeTrack.cs">
-      <DependentUpon>AppModel.tt</DependentUpon>
+      <DependentUpon>InTimeModel.tt</DependentUpon>
     </Compile>
     <Compile Include="User\UserWindow.xaml.cs">
       <DependentUpon>UserWindow.xaml</DependentUpon>
@@ -154,12 +157,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="AppModel.edmx">
+    <EntityDeploy Include="InTimeModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AppModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>InTimeModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="AppModel.edmx.diagram">
-      <DependentUpon>AppModel.edmx</DependentUpon>
+    <None Include="InTimeModel.edmx.diagram">
+      <DependentUpon>InTimeModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -171,16 +174,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AppModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AppModel.edmx</DependentUpon>
-      <LastGenOutput>AppModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="AppModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AppModel.edmx</DependentUpon>
-      <LastGenOutput>AppModel.cs</LastGenOutput>
-    </Content>
     <Resource Include="Resources\StoppedIcon.ico" />
     <Resource Include="Resources\PlayingIcon.ico" />
     <None Include="Resources\InTimeIcon.ico" />
@@ -188,6 +181,17 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="InTimeModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>InTimeModel.edmx</DependentUpon>
+      <LastGenOutput>InTimeModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="InTimeModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>InTimeModel.edmx</DependentUpon>
+      <LastGenOutput>InTimeModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -20,7 +20,7 @@ namespace InTime.Admin
     /// </summary>
     public partial class AddPersonWindow : Window
     {
-        inTimeDbEntities intimeDb = new inTimeDbEntities();
+        InTimeDbEntities intimeDb = new InTimeDbEntities();
 
         public AddPersonWindow()
         {
@@ -34,7 +34,7 @@ namespace InTime.Admin
 
             if (name != "")
             {
-                InTime.Person newPerson = new InTime.Person();
+                InTime.Person newPerson = new Person();
                 newPerson.PersonName = name;
                 newPerson.AccessCode = Guid.NewGuid();
 

@@ -44,7 +44,10 @@ namespace InTime
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/StoppedIcon.ico"); // vecchio percorso icona: InTime.Properties.Resources.InTimeIcon;
             inTimeIcon.Visible = true;
             inTimeIcon.Text = "Timer fermo";
-            inTimeIcon.Click += new EventHandler(this.inTimeIcon_Click);            
+            inTimeIcon.Click += new EventHandler(this.inTimeIcon_Click);
+
+            UserWindow userWindow = new UserWindow();
+            userWindow.Show();
         }
 
 
@@ -136,7 +139,7 @@ namespace InTime
             secondstimer.Start();
             minutesTimer.Start();
 
-            timeTracker = new TimeTracker(1, 1);
+            timeTracker = new TimeTracker(1, 1, 1);
             Project2Time.Text = timeTracker.Start();
 
             project1_stopwatch.Stop(); // TO DO: da dinamizzare

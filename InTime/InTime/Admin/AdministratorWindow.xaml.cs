@@ -22,7 +22,7 @@ namespace InTime.Admin
     /// </summary>
     public partial class AdministratorWindow : Window
     {
-        inTimeDbEntities intimeDb = new inTimeDbEntities();
+        InTimeDbEntities intimeDb = new InTimeDbEntities();
         private static AdministratorWindow administratorWindow;
 
         public AdministratorWindow()
@@ -93,25 +93,42 @@ namespace InTime.Admin
         {
             ListBoxItem itm = (ListBoxItem)sender;
             string projectName = itm.Content.ToString();
-            TextBlockProject.Text = projectName;
 
             DbSet<Project> projectList = intimeDb.Projects;
 
-            var queryDesc = (from Project in projectList
+            var selectedProject = (from Project in projectList
                         where Project.ProjectName == projectName
-                        select Project.Description).FirstOrDefault();
+                        select Project).FirstOrDefault();
 
-            Description.Text = queryDesc;
+            DbSet<TimeTrack> timeTracksDBSet = intimeDb.TimeTracks;
+            DbSet<Assignment> AssignmentsDBSet = intimeDb.Assignments;
 
-            DbSet<TimeTrack> timeTracks = intimeDb.TimeTracks;
+            var workTimeList = (from TimeTrack in timeTracksDBSet
+                         where selectedProject.Id == TimeTrack.ProjectId
+                         select TimeTrack.WorkTime).ToList(); // VARI id delle assegnazioni (a persone) di quel SINGOLO progetto
 
-            var queryTime = (from TimeTrack in timeTracks
-                            join Project in projectList on TimeTrack.ProjectId equals Project.Id
-                            select TimeTrack.WorkTime).FirstOrDefault().ToString();
+            TimeSpan totalWorkTime = new TimeSpan();
+            foreach(TimeSpan times in workTimeList)
+            {
+                totalWorkTime += times;
+            }
 
-            WorkTime.Text = queryTime;
+            WorkTime.Text = totalWorkTime.ToString(); // tempo di lavoro totale effettuato
 
             // TO DO: aggiungere metodo che aggiorna anche la datagrid
+
+            // PROPRIETà DEL PROGETTO (STATICHE)
+            TextBlockProject.Text = projectName;
+
+            TextBlockCustomers.Text = selectedProject.Customer; // null
+            Description.Text = selectedProject.Description; // null
+            TextBlockDateCreation.Text = selectedProject.DateCreation.ToString(); // null
+            TextBlockEstimatedTime.Text = selectedProject.ProjectAssignedTime.ToString(); // null
+
+            if (selectedProject.Active)
+                TextBlockActive.Text = "Sì";
+            else
+                TextBlockActive.Text = "No";
         }
 
         public void GetDbPerson()

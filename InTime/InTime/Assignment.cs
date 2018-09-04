@@ -12,23 +12,22 @@ namespace InTime
     using System;
     using System.Collections.Generic;
     
-    public partial class Project
+    public partial class Assignment
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Project()
+        public Assignment()
         {
-            this.Assignments = new HashSet<Assignment>();
+            this.TimeTracks = new HashSet<TimeTrack>();
         }
     
         public int Id { get; set; }
-        public string ProjectName { get; set; }
-        public Nullable<System.TimeSpan> ProjectAssignedTime { get; set; }
-        public string Description { get; set; }
-        public Nullable<System.DateTime> DateCreation { get; set; }
-        public string Customer { get; set; }
-        public bool Active { get; set; }
+        public int ProjectId { get; set; }
+        public int PersonId { get; set; }
+        public Nullable<System.TimeSpan> AssignedTime { get; set; }
     
+        public virtual Person Person { get; set; }
+        public virtual Project Project { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Assignment> Assignments { get; set; }
+        public virtual ICollection<TimeTrack> TimeTracks { get; set; }
     }
 }

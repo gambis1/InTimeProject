@@ -15,19 +15,21 @@ namespace InTime.Logic
         private int trackerId;
         private int projectId;
         private int personId;
-        private inTimeDbEntities intimeDb = new inTimeDbEntities();
+        private InTimeDbEntities intimeDb = new InTimeDbEntities();
+        private int assignmentId;
 
-        public TimeTracker(int projectId, int personId)
+        public TimeTracker(int projectId, int personId, int assignmentId)
         {
             this.projectId = projectId;
             this.personId = personId;
+            this.assignmentId = assignmentId;
         }
 
         public string Start()
         {
             DbSet<TimeTrack> timeTracksList = intimeDb.TimeTracks;
 
-            DateTime trackingDate =
+            DateTime? trackingDate = 
                  (from TimeTrack in timeTracksList
                  orderby TimeTrack.Id descending
                  where TimeTrack.ProjectId == projectId
@@ -36,7 +38,7 @@ namespace InTime.Logic
 
             startingTime = new TimeSpan(0, 0, 0);
 
-            if (trackingDate.Date != DateTime.Now.Date) // data non presente in database: nuova data, startingtime = 0
+            if (trackingDate != DateTime.Now.Date) // data non presente in database: nuova data, startingtime = 0
             {
                 DateTime newDate = DateTime.Now.Date;
 
@@ -45,6 +47,7 @@ namespace InTime.Logic
                 newRecord.WorkTime = startingTime;
                 newRecord.PersonId = personId;
                 newRecord.ProjectId = projectId;
+                newRecord.AssignmentId = assignmentId;
 
                 intimeDb.TimeTracks.Add(newRecord);
                 intimeDb.SaveChanges();

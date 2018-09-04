@@ -20,7 +20,7 @@ namespace InTime.User
     /// </summary>
     public partial class UserWindow : Window
     {
-        inTimeDbEntities intimeDb = new inTimeDbEntities();
+        InTimeDbEntities intimeDb = new InTimeDbEntities();
         private static UserWindow userWindow;
 
         public UserWindow()
@@ -74,11 +74,11 @@ namespace InTime.User
 
             DbSet<TimeTrack> timeTracks = intimeDb.TimeTracks;
 
-            var queryTime = (from TimeTrack in timeTracks
-                             join Project in projectList on TimeTrack.ProjectId equals Project.Id
-                             select TimeTrack.WorkTime).FirstOrDefault().ToString();
+            //var queryTime = (from TimeTrack in timeTracks
+            //                 join Project in projectList on TimeTrack.ProjectId equals Project.Id
+            //                 select TimeTrack.WorkTime).FirstOrDefault().ToString();
 
-            WorkTime.Text = queryTime;
+            //WorkTime.Text = queryTime;
 
             // TO DO: aggiungere metodo che aggiorna anche la datagrid
         }
