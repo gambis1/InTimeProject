@@ -46,13 +46,13 @@ namespace InTime.User
 
             List<string> list = query.ToList();
 
-            ProjectList.Items.Clear();
+            AssignmentList.Items.Clear();
 
             foreach (string projectName in list)
             {
                 ListBoxItem itm = new ListBoxItem();
                 itm.Content = projectName;
-                ProjectList.Items.Add(itm);
+                AssignmentList.Items.Add(itm);
                 itm.Selected += new RoutedEventHandler(ListBoxItem_Selected);
             }
 
@@ -62,7 +62,7 @@ namespace InTime.User
         {
             ListBoxItem itm = (ListBoxItem)sender;
             string projectName = itm.Content.ToString();
-            TextBlockProject.Text = projectName;
+            ProjectName.Text = projectName;
 
             DbSet<Project> projectList = intimeDb.Projects;
 
@@ -70,7 +70,7 @@ namespace InTime.User
                              where Project.ProjectName == projectName
                              select Project.Description).FirstOrDefault();
 
-            Description.Text = queryDesc;
+            AssignmentDescription.Text = queryDesc;
 
             DbSet<TimeTrack> timeTracks = intimeDb.TimeTracks;
 
