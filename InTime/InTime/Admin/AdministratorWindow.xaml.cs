@@ -126,7 +126,7 @@ namespace InTime.Admin
             TimeSpan totalTime = TimeSpan.FromTicks(totalWorkTime);
             DateTime dateProject = (DateTime)selectedProject.DateCreation;
 
-            WorkTime.Text = String.Format("{0:00}:{1:00}:{2:00}", totalTime.Hours, totalTime.Minutes, totalTime.Seconds); // tempo di lavoro totale effettuato
+            WorkTime.Text = InTime.Logic.TimeTracker.ToString(totalTime); // tempo di lavoro totale effettuato
 
             // TO DO: aggiungere metodo che aggiorna anche la datagrid
 

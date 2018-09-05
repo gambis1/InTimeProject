@@ -98,12 +98,17 @@ namespace InTime.Logic
         public string UpdateSecond()
         {
             TimeSpan ts = stopwatch.Elapsed + startingTime;
-            return String.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds);
+            return ToString(ts);
         }
 
         public bool IsRunning()
         {
             return stopwatch.IsRunning;
         }
+
+        public static string ToString(TimeSpan timeSpan)
+        {
+            return String.Format("{0:00}:{1:00}:{2:00}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds); ;
+        } 
     }
 }
