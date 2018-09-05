@@ -97,7 +97,8 @@ namespace InTime
             MessageBoxResult result = System.Windows.MessageBox.Show("Vuoi uscire dall'applicazione?", "Esci", MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
-                timeTracker.Stop();
+                if (timeTracker.IsRunning())
+                    timeTracker.Stop();
                 project1_stopwatch.Stop();
                 inTimeIcon.Dispose(); // fa scomparire l'icona dalla barra
                 System.Windows.Application.Current.Shutdown();
@@ -118,7 +119,8 @@ namespace InTime
             timer.Start();
             project1_stopwatch.Start();
 
-            timeTracker.Stop(); // ricordiamoci che è provvisorio e non va
+            if (timeTracker.IsRunning())
+                timeTracker.Stop(); // ricordiamoci che è provvisorio e non va
 
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/PlayingIcon.ico");
             inTimeIcon.Text = "Progetto 1: 00:00";

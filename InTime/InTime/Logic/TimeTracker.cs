@@ -100,5 +100,10 @@ namespace InTime.Logic
             TimeSpan ts = stopwatch.Elapsed + startingTime;
             return String.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds);
         }
+
+        public bool IsRunning()
+        {
+            return stopwatch.IsRunning;
+        }
     }
 }
