@@ -24,12 +24,13 @@ namespace InTime.Admin
     {
         InTimeDbEntities intimeDb = new InTimeDbEntities();
         private static AdministratorWindow administratorWindow;
+        private List<Project> projectList;
 
         public AdministratorWindow()
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
-            GetDbData();
+            GetProjectsInList();
             GetDbPerson();
         }
 
@@ -53,7 +54,7 @@ namespace InTime.Admin
                 intimeDb.Projects.Add(newProject);
                 intimeDb.SaveChanges();
 
-                GetDbData(); 
+                GetProjectsInList(); 
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
@@ -67,38 +68,47 @@ namespace InTime.Admin
             this.Close();
         }
 
-        private void GetDbData()
+        private void GetProjectsInList()
         {
-            DbSet<Project> projectList = intimeDb.Projects;
+            DbSet<Project> projectDbList = intimeDb.Projects;
 
-            var query =
-                from Project in projectList
-                orderby Project.Id
-                select Project.ProjectName;
-
-            List<string> list = query.ToList();
+            projectList =
+                (from Project in projectDbList
+                 orderby Project.Id
+                select Project).ToList();
 
             ProjectList.Items.Clear();
 
-            foreach(string projectName in list)
+            foreach(Project project in projectList)
             {
                 ListBoxItem itm = new ListBoxItem();
-                itm.Content = projectName;
+                itm.Content = project.ProjectName;
+                itm.Tag = project.Id;
                 ProjectList.Items.Add(itm);
-                itm.Selected += new RoutedEventHandler(ListBoxItem_Selected);
+                itm.Selected += new RoutedEventHandler(ProjectSelected);
             }
         }
 
-        private void ListBoxItem_Selected(object sender, RoutedEventArgs e)
+        private void ProjectSelected(object sender, RoutedEventArgs e)
         {
             ListBoxItem itm = (ListBoxItem)sender;
-            string projectName = itm.Content.ToString();
+            int projectId = (int)itm.Tag;
 
-            DbSet<Project> projectList = intimeDb.Projects;
+            //DbSet<Project> projectList = intimeDb.Projects;
 
-            var selectedProject = (from Project in projectList
-                        where Project.ProjectName == projectName
-                        select Project).FirstOrDefault();
+            //var selectedProject = (from Project in projectList
+            //            where Project.ProjectName == projectName
+            //            select Project).FirstOrDefault();
+
+            Project selectedProject = new Project();
+
+            foreach(Project project in projectList)
+            {
+                if(projectId == project.Id)
+                {
+                    selectedProject = project;
+                }
+            }
 
             DbSet<TimeTrack> timeTracksDBSet = intimeDb.TimeTracks;
             DbSet<Assignment> AssignmentsDBSet = intimeDb.Assignments;
@@ -121,7 +131,7 @@ namespace InTime.Admin
             // TO DO: aggiungere metodo che aggiorna anche la datagrid
 
             // PROPRIETà DEL PROGETTO (STATICHE)
-            TextBlockProject.Text = projectName;
+            TextBlockProject.Text = selectedProject.ProjectName;
 
             TextBlockCustomers.Text = selectedProject.Customer; // null
             Description.Text = selectedProject.Description; // null
