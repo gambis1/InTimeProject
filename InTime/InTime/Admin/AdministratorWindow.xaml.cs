@@ -114,6 +114,7 @@ namespace InTime.Admin
             }
 
             TimeSpan totalTime = TimeSpan.FromTicks(totalWorkTime);
+            DateTime dateProject = (DateTime)selectedProject.DateCreation;
 
             WorkTime.Text = String.Format("{0:00}:{1:00}:{2:00}", totalTime.Hours, totalTime.Minutes, totalTime.Seconds); // tempo di lavoro totale effettuato
 
@@ -124,7 +125,7 @@ namespace InTime.Admin
 
             TextBlockCustomers.Text = selectedProject.Customer; // null
             Description.Text = selectedProject.Description; // null
-            TextBlockDateCreation.Text = selectedProject.DateCreation.ToString(); // null
+            TextBlockDateCreation.Text = dateProject.ToShortDateString(); // null
             TextBlockEstimatedTime.Text = selectedProject.ProjectAssignedTime.ToString(); // null
 
             if (selectedProject.Active)
