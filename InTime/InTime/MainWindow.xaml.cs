@@ -46,8 +46,11 @@ namespace InTime
             inTimeIcon.Text = "Timer fermo";
             inTimeIcon.Click += new EventHandler(this.inTimeIcon_Click);
 
-            UserWindow userWindow = new UserWindow();
-            userWindow.Show();
+            //UserWindow userWindow = new UserWindow();
+            //userWindow.Show();
+
+            AdministratorWindow administratorWindow = new AdministratorWindow();
+            administratorWindow.Show();
         }
 
 

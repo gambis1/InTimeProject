@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:InTime.Admin"
         mc:Ignorable="d"
         Title="InTime - Amministratore" Height="700" Width="800" MinHeight="300" MinWidth="700">
+    <Window.Resources>
+        <CollectionViewSource x:Key="ItemCollectionViewSource"  CollectionViewType="ListCollectionView"/>
+    </Window.Resources>
     <DockPanel Name="FullContainer">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
@@ -80,10 +83,12 @@
                 <Button x:Name="CancelButton" VerticalAlignment="Bottom" Margin="10" Height="25" Width="90" Click="CancelButton_Click">Annulla</Button>
                 <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">Applica</Button>
             </StackPanel>
-            <DataGrid Name="NameGrid" AutoGenerateColumns="False" GridLinesVisibility="All" ItemsSource="{Binding}" Margin="0 0 10 0">
+            <DataGrid Name="AssignmentGrid" GridLinesVisibility="All" Margin="0 0 10 0" AutoGenerateColumns="False" CanUserAddRows="False"
+                      DataContext="{StaticResource ItemCollectionViewSource}"
+                      ItemsSource="{Binding}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn x:Name="ColumnName" Header="Nome" Width="300" Binding="{Binding name}" />
-                    <DataGridTextColumn x:Name="ColumnTime" Header="Tempo" Width="400" Binding="{Binding time}"/>
+                    <DataGridTextColumn Header="Nome" Binding="{Binding name}"/>
+                    <DataGridTextColumn Header="Tempo totale" Binding="{Binding time}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
