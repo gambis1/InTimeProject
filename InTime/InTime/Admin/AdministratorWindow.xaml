@@ -26,35 +26,49 @@
             <GroupBox Header="Progetto" Margin="0,5,10,0" DockPanel.Dock="Top" VerticalAlignment="Top">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="142*" />
-                        <ColumnDefinition Width="144*" />
-                        <ColumnDefinition Width="169*" />
-                        <ColumnDefinition Width="95*" />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="26*" />
-                        <RowDefinition Height="26*" />
-                        <RowDefinition Height="17*" />
-                        <RowDefinition Height="26" />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
-
-                    <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Height="26" Margin="0,0,87,0">Nome:</Label>
-                    <TextBlock x:Name="TextBlockProject" Grid.Row="0" VerticalAlignment="Center" Height="16" Margin="60,5,0,5" />
-                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Height="26">Descrizione:</Label>
-                    <TextBlock x:Name="Description" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" TextWrapping="Wrap" VerticalAlignment="Center" Height="16" Margin="0,6,0,4" />
-                    <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Height="26">Tempo di lavoro stimato:</Label>
-                    <TextBlock x:Name="TextBlockEstimatedTime" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Height="16" Margin="10,5,5,5">0:00</TextBlock>
-                    <Label Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Height="26">Tempo di lavoro totale:</Label>
-                    <TextBlock x:Name="WorkTime" Grid.Row="3" Grid.Column="3" VerticalAlignment="Center" Height="16" Margin="0,5"></TextBlock>
-                    <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Height="26" Margin="5,0,88,0" Content="Cliente:"/>
-                    <TextBlock x:Name="TextBlockCustomers" Grid.Row="0" VerticalAlignment="Center" Height="16" Margin="62,5,0,5" Grid.Column="1" />
-                    <Label Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Height="26" Margin="0,0,78,0" Content="Data creazione:" RenderTransformOrigin="0.235,0.577"/>
-                    <TextBlock x:Name="TextBlockDateCreation" Grid.Row="0" VerticalAlignment="Center" Height="16" Margin="96,5,47,5" Grid.Column="2" Grid.ColumnSpan="2" />
-                    <Label Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Height="26" Margin="0,0,47,0" Content="Attivo:"/>
-                    <TextBlock x:Name="TextBlockActive" Grid.Row="0" VerticalAlignment="Bottom" Height="16" Margin="48,0,0,5" Grid.Column="3" />
+                    <!-- PRIMA RIGA -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                        <Label>Nome:</Label>
+                        <TextBlock x:Name="ProjectName" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+                        <Label>Cliente:</Label>
+                        <TextBlock x:Name="Customer" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2">
+                        <Label>Data creazione:</Label>
+                        <TextBlock x:Name="CreationDate" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <!-- SECONDA RIGA-->
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                        <Label>Tempo stimato:</Label>
+                        <TextBlock x:Name="EstimatedTime" VerticalAlignment="Center">120:00</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+                        <Label>Tempo totale:</Label>
+                        <TextBlock x:Name="TotalWorkTime" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2">
+                        <Label>Attivo:</Label>
+                        <TextBlock x:Name="Active" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <!-- TERZA RIGA -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+                        <Label>Descrizione:</Label>
+                        <TextBlock x:Name="Description" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                    </StackPanel>
                 </Grid>
             </GroupBox>
-            <DockPanel DockPanel.Dock="Top">
+            <DockPanel Name="MidButtons" DockPanel.Dock="Top">
                 <StackPanel Orientation="Horizontal" Margin="0 10" HorizontalAlignment="Left" DockPanel.Dock="Left">
                     <ComboBox x:Name="ComboPerson" Width="162" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" />
                     <Button x:Name="AddGridPerson" Width="90" Height="25" Margin="10,0,0,0" Click="AddGridPerson_Click">Aggiungi</Button>
@@ -66,7 +80,7 @@
                 <Button x:Name="CancelButton" VerticalAlignment="Bottom" Margin="10" Height="25" Width="90" Click="CancelButton_Click">Annulla</Button>
                 <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">Applica</Button>
             </StackPanel>
-            <DataGrid Name="NameGrid" AutoGenerateColumns="False" GridLinesVisibility="All" ItemsSource="{Binding}" >
+            <DataGrid Name="NameGrid" AutoGenerateColumns="False" GridLinesVisibility="All" ItemsSource="{Binding}" Margin="0 0 10 0">
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="ColumnName" Header="Nome" Width="300" Binding="{Binding name}" />
                     <DataGridTextColumn x:Name="ColumnTime" Header="Tempo" Width="400" Binding="{Binding time}"/>

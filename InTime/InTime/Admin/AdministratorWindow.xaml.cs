@@ -124,24 +124,31 @@ namespace InTime.Admin
             }
 
             TimeSpan totalTime = TimeSpan.FromTicks(totalWorkTime);
-            DateTime dateProject = (DateTime)selectedProject.DateCreation;
+            DateTime? dateProject = selectedProject.DateCreation;
 
-            WorkTime.Text = InTime.Logic.TimeTracker.ToString(totalTime); // tempo di lavoro totale effettuato
+            TotalWorkTime.Text = InTime.Logic.TimeTracker.ToString(totalTime); // tempo di lavoro totale effettuato
 
             // TO DO: aggiungere metodo che aggiorna anche la datagrid
 
             // PROPRIETà DEL PROGETTO (STATICHE)
-            TextBlockProject.Text = selectedProject.ProjectName;
+            ProjectName.Text = selectedProject.ProjectName;
 
-            TextBlockCustomers.Text = selectedProject.Customer; // null
+            Customer.Text = selectedProject.Customer; // null
             Description.Text = selectedProject.Description; // null
-            TextBlockDateCreation.Text = dateProject.ToShortDateString(); // null
-            TextBlockEstimatedTime.Text = selectedProject.ProjectAssignedTime.ToString(); // null
+            EstimatedTime.Text = selectedProject.ProjectAssignedTime.ToString(); // null
+
+            if (dateProject != null)
+            {
+                CreationDate.Text = ((DateTime)dateProject).ToShortDateString();
+            } else
+            {
+                CreationDate.Text = "";
+            }
 
             if (selectedProject.Active)
-                TextBlockActive.Text = "Sì";
+                Active.Text = "Sì";
             else
-                TextBlockActive.Text = "No";
+                Active.Text = "No";
         }
 
         public void GetDbPerson()
