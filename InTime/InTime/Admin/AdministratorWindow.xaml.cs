@@ -100,16 +100,8 @@ namespace InTime.Admin
             ListBoxItem itm = (ListBoxItem)sender;
             int projectId = (int)itm.Tag;
 
-            Project selectedProject = new Project();
-
-            foreach(Project project in projectList) // pesca dalla lista dei progetti quello selezionato
-            {
-                if(projectId == project.Id)
-                {
-                    selectedProject = project;
-                }
-            }
-
+            /* OBSOLETO: CALCOLO DEL TEMPO TOTALE
+             * 
             var workTimeList = (from TimeTrack in timeTracksDBSet
                          where selectedProject.Id == TimeTrack.ProjectId
                          select TimeTrack.WorkTime).Cast<long>().ToList(); // VARI id delle assegnazioni (a persone) di quel SINGOLO progetto
@@ -122,41 +114,18 @@ namespace InTime.Admin
 
             TimeSpan totalTime = TimeSpan.FromTicks(totalWorkTime);
             TotalWorkTime.Text = InTime.Logic.TimeTracker.ToString(totalTime); // tempo di lavoro totale
-
-
-            // DATI PER GROUPBOX (PROPRIETà STATICHE DEL PROGETTO)
-            ProjectName.Text = selectedProject.ProjectName; // not null
-            Customer.Text = selectedProject.Customer; // null
-            Description.Text = selectedProject.Description; // null
-            EstimatedTime.Text = selectedProject.ProjectAssignedTime.ToString(); // null
-
-            DateTime? creationDate = selectedProject.DateCreation; // null
-            if (creationDate != null)
-            {
-                CreationDate.Text = ((DateTime)creationDate).ToShortDateString();
-            } else
-            {
-                CreationDate.Text = "";
-            }
-
-            if (selectedProject.Active) // not null
-                Active.Text = "Sì";
-            else
-                Active.Text = "No";
-            // FINE DATI PER GROUPBOX
-
-
-
-
-
+            */
 
             // POPOLA LA DATAGRID
 
-            List<Assignment> assignmentList = (from Assignment in AssignmentsDBSet // seleziona tutti gli assignment per un progetto
+            // seleziona tutti gli assignment per un progetto
+            List<Assignment> assignmentList = (from Assignment in AssignmentsDBSet
                                                where Assignment.ProjectId == projectId
                                                select Assignment).ToList();
 
             List<AssignmentForDataGrid> dataGridAssignments = new List<AssignmentForDataGrid>();
+
+            long projectTotalTicks = 0; // serve per il tempo totale del progetto
 
             foreach (Assignment assignment in assignmentList)
             {
@@ -167,30 +136,61 @@ namespace InTime.Admin
                                   where TimeTrack.PersonId == personId
                                   select TimeTrack).ToList();
 
-                long totalTicks = 0;
-                foreach(TimeTrack track in timetracksList)
+                long personTotalTicks = 0;
+                foreach(TimeTrack track in timetracksList) // calcola il tempo totale della persona
                 {
-                    totalTicks += (long)track.WorkTime;
+                    personTotalTicks += (long)track.WorkTime;
                 }
-                TimeSpan personTotalWorktime = TimeSpan.FromTicks(totalTicks);
+                projectTotalTicks += personTotalTicks;
 
-                AssignmentForDataGrid assignmentForDataGrid = new AssignmentForDataGrid();
+                TimeSpan personTotalWorktime = TimeSpan.FromTicks(personTotalTicks);
+
+                AssignmentForDataGrid assignmentForDataGrid = new AssignmentForDataGrid(); // creazione Assignment per DataGrid
                 assignmentForDataGrid.name = personId.ToString();
                 assignmentForDataGrid.time = TimeTracker.ToString(personTotalWorktime);
                 dataGridAssignments.Add(assignmentForDataGrid);
             }
 
+
+            // PROPRIETà DEL PROGETTO (GROUPBOX)
+
+            Project selectedProject = new Project();
+            foreach (Project project in projectList) // pesca dalla lista dei progetti quello selezionato
+            {
+                if (projectId == project.Id)
+                {
+                    selectedProject = project;
+                }
+            }
+
+            TimeSpan projectTotalWorktime = TimeSpan.FromTicks(projectTotalTicks);
+            TotalWorkTime.Text = TimeTracker.ToString(projectTotalWorktime);
+            
+            ProjectName.Text = selectedProject.ProjectName; // not null
+            Customer.Text = selectedProject.Customer; // null
+            Description.Text = selectedProject.Description; // null
+            EstimatedTime.Text = selectedProject.ProjectAssignedTime.ToString(); // null
+
+            DateTime? creationDate = selectedProject.DateCreation; // null
+            if (creationDate != null)
+            {
+                CreationDate.Text = ((DateTime)creationDate).ToShortDateString();
+            }
+            else
+            {
+                CreationDate.Text = "";
+            }
+
+            if (selectedProject.Active) // not null
+                Active.Text = "Sì";
+            else
+                Active.Text = "No";
+
+
             // BINDING
             CollectionViewSource itemCollectionViewSource;
             itemCollectionViewSource = (CollectionViewSource)(FindResource("ItemCollectionViewSource"));
             itemCollectionViewSource.Source = dataGridAssignments;
-
-
-
-
-
-
-
         }
 
         public void GetDbPerson()
