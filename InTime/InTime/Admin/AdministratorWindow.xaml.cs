@@ -24,17 +24,18 @@ namespace InTime.Admin
     public partial class AdministratorWindow : Window
     {
         InTimeDbEntities intimeDb = new InTimeDbEntities();
-        private static AdministratorWindow administratorWindow;
-
         private List<Project> projectList;
-        private List<Assignment> assignmentList;
+        private List<Person> personList;
+        private Project selectedProject;
+
+        private static AdministratorWindow administratorWindow; // per singleton
 
         public AdministratorWindow()
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
             GetProjectsInList();
-            GetDbPerson();
+            GetPeopleListInComboBox();
         }
 
         public static void IsOpened()
@@ -49,8 +50,7 @@ namespace InTime.Admin
 
         // aggiungere un nuovo progetto al database
         private void NewProjectButton_Click(object sender, RoutedEventArgs e)
-        {
-            
+        {   
                 InTime.Project newProject = new InTime.Project();
                 newProject.ProjectName = "Nuovo progetto";
 
@@ -100,21 +100,6 @@ namespace InTime.Admin
             ListBoxItem itm = (ListBoxItem)sender;
             int projectId = (int)itm.Tag;
 
-            /* OBSOLETO: CALCOLO DEL TEMPO TOTALE
-             * 
-            var workTimeList = (from TimeTrack in timeTracksDBSet
-                         where selectedProject.Id == TimeTrack.ProjectId
-                         select TimeTrack.WorkTime).Cast<long>().ToList(); // VARI id delle assegnazioni (a persone) di quel SINGOLO progetto
-
-            long totalWorkTime = 0;
-            foreach(long ticks in workTimeList)
-            {
-                totalWorkTime += ticks;
-            }
-
-            TimeSpan totalTime = TimeSpan.FromTicks(totalWorkTime);
-            TotalWorkTime.Text = InTime.Logic.TimeTracker.ToString(totalTime); // tempo di lavoro totale
-            */
 
             // POPOLA LA DATAGRID
 
@@ -146,15 +131,22 @@ namespace InTime.Admin
                 TimeSpan personTotalWorktime = TimeSpan.FromTicks(personTotalTicks);
 
                 AssignmentForDataGrid assignmentForDataGrid = new AssignmentForDataGrid(); // creazione Assignment per DataGrid
-                assignmentForDataGrid.name = personId.ToString();
+
+                foreach(Person person in personList)
+                {
+                    if(personId == person.Id)
+                    {
+                        assignmentForDataGrid.name = person.PersonName;
+                    }
+                }
                 assignmentForDataGrid.time = TimeTracker.ToString(personTotalWorktime);
+                assignmentForDataGrid.active = assignment.Active;
                 dataGridAssignments.Add(assignmentForDataGrid);
             }
 
 
             // PROPRIETà DEL PROGETTO (GROUPBOX)
 
-            Project selectedProject = new Project();
             foreach (Project project in projectList) // pesca dalla lista dei progetti quello selezionato
             {
                 if (projectId == project.Id)
@@ -193,25 +185,25 @@ namespace InTime.Admin
             itemCollectionViewSource.Source = dataGridAssignments;
         }
 
-        public void GetDbPerson()
+        public void GetPeopleListInComboBox()
         {
-            DbSet<Person> personList = intimeDb.People;
+            DbSet<Person> personDbList = intimeDb.People;
 
-            var query = from Person in personList
-                        orderby Person.Id
-                        select Person.PersonName;
+            personList = (from Person in personDbList
+                        orderby Person.PersonName
+                        select Person).ToList();
 
-            List<string> list = query.ToList();
             ComboPerson.Items.Clear();
 
-            foreach (string personName in list)
+            foreach (Person person in personList)
             {
                 ComboBoxItem comboItem = new ComboBoxItem();
-                comboItem.Content = personName;
+                comboItem.Content = person.PersonName;
+                comboItem.Tag = person.Id;
                 ComboPerson.Items.Add(comboItem);
-
-                // TO DO: fare in modo che se una persona sta già nella datagrid non compaia qui
             }
+
+            // TO DO: fare in modo che se una persona sta già nella datagrid non compaia qui
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -227,20 +219,23 @@ namespace InTime.Admin
 
         private void AddGridPerson_Click(object sender, RoutedEventArgs e)
         {
-            string personName = ComboPerson.Text;
+            NewAssignment(selectedProject.Id);
+        }
 
-            DbSet<TimeTrack> timeTracks = intimeDb.TimeTracks;
-            DbSet<Person> people = intimeDb.People;
+        private void NewAssignment(int projectId)
+        {
+            int personId = (int)((ComboBoxItem)ComboPerson.SelectedItem).Tag;
 
-            var queryPerson = (from Person in people
-                              where Person.PersonName == personName
-                              select Person.Id).FirstOrDefault();
+            Assignment newAssignment = new Assignment
+            {
+                PersonId = personId,
+                ProjectId = projectId,
+                Date = DateTime.Now,
+                Active = true
+            };
 
-            var queryWorkTime = (from TimeTrack in timeTracks
-                        where TimeTrack.PersonId == queryPerson
-                        select TimeTrack.WorkTime).FirstOrDefault().ToString();
-
-            // AssignmentGrid.Items.Add(new NameTimeForGrid { name = personName, time = queryWorkTime });
+            intimeDb.Assignments.Add(newAssignment);
+            intimeDb.SaveChanges();
         }
     }
 
@@ -248,5 +243,6 @@ namespace InTime.Admin
     {
         public string name { get; set; }
         public string time { get; set; }
+        public bool active { get; set; }
     }
 }

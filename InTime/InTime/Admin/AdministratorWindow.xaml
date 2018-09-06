@@ -89,6 +89,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Nome" Binding="{Binding name}"/>
                     <DataGridTextColumn Header="Tempo totale" Binding="{Binding time}"/>
+                    <DataGridTextColumn Header="Attivo" Binding="{Binding active}" />
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>

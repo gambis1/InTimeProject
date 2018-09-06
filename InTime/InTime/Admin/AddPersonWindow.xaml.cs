@@ -49,7 +49,7 @@ namespace InTime.Admin
             AdministratorWindow mainWindow = Application.Current.Windows.OfType<AdministratorWindow>().FirstOrDefault();
             if(mainWindow != null)
             {
-                mainWindow.GetDbPerson();
+                mainWindow.GetPeopleListInComboBox();
             }
             this.Close();
         }
