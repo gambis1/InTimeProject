@@ -72,6 +72,9 @@
     <Compile Include="Admin\AddPersonWindow.xaml.cs">
       <DependentUpon>AddPersonWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Admin\AssignmentDetailWindow.xaml.cs">
+      <DependentUpon>AssignmentDetailWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Assignment.cs">
       <DependentUpon>InTimeDataModel.tt</DependentUpon>
     </Compile>
@@ -110,6 +113,8 @@
     <Compile Include="User\UserWindow.xaml.cs">
       <DependentUpon>UserWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\AssignmentForDataGrid.cs" />
+    <Compile Include="ViewModel\TimeTrackViewModel.cs" />
     <Page Include="Admin\AddPersonWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -126,6 +131,10 @@
       <DependentUpon>AdministratorWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Admin\AssignmentDetailWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

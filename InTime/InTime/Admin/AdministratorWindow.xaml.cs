@@ -1,4 +1,5 @@
 ﻿using InTime.Logic;
+using InTime.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -141,6 +143,7 @@ namespace InTime.Admin
                 }
                 assignmentForDataGrid.time = TimeTracker.ToString(personTotalWorktime);
                 assignmentForDataGrid.active = assignment.Active;
+                assignmentForDataGrid.personId = assignment.PersonId;
                 dataGridAssignments.Add(assignmentForDataGrid);
             }
 
@@ -237,12 +240,12 @@ namespace InTime.Admin
             intimeDb.Assignments.Add(newAssignment);
             intimeDb.SaveChanges();
         }
-    }
 
-    public class AssignmentForDataGrid
-    {
-        public string name { get; set; }
-        public string time { get; set; }
-        public bool active { get; set; }
+        private void AssignmentGrid_RowDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            AssignmentForDataGrid ass = AssignmentGrid.SelectedItem as AssignmentForDataGrid;
+
+            AssignmentDetailWindow assignment = new AssignmentDetailWindow(ass.personId, selectedProject.Id);
+        }
     }
 }

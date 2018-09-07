@@ -83,7 +83,8 @@
                 <Button x:Name="CancelButton" VerticalAlignment="Bottom" Margin="10" Height="25" Width="90" Click="CancelButton_Click">Annulla</Button>
                 <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">Applica</Button>
             </StackPanel>
-            <DataGrid Name="AssignmentGrid" GridLinesVisibility="All" Margin="0 0 10 0" AutoGenerateColumns="False" CanUserAddRows="False"
+            <DataGrid Name="AssignmentGrid" GridLinesVisibility="All" Margin="0 0 10 0" MouseDoubleClick="AssignmentGrid_RowDoubleClick"
+                      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
                       DataContext="{StaticResource ItemCollectionViewSource}"
                       ItemsSource="{Binding}">
                 <DataGrid.Columns>
