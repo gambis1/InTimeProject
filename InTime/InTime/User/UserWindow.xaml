@@ -67,8 +67,8 @@
             </GroupBox>
             <DataGrid Name="NameGrid" AutoGenerateColumns="False" GridLinesVisibility="All" ItemsSource="{Binding}" Margin="0 5 10 10">
                 <DataGrid.Columns>
-                    <DataGridTextColumn x:Name="ColumnName" Header="Nome" Width="300" Binding="{Binding name}" />
-                    <DataGridTextColumn x:Name="ColumnTime" Header="Tempo" Width="400" Binding="{Binding time}"/>
+                    <DataGridTextColumn x:Name="ColumnName" Header="Nome" Width="1*" Binding="{Binding name}" />
+                    <DataGridTextColumn x:Name="ColumnTime" Header="Tempo" Width="1*" Binding="{Binding time}" />
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>

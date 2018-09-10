@@ -20,74 +20,79 @@
                 <MenuItem Header="Aggiungi persona" Click="AddPerson_Click" />
             </MenuItem>
         </Menu>
-        <DockPanel Name="SideContainer" Margin="10,0,10,10" DockPanel.Dock="Left" LastChildFill="True" Width="200">
-            <Label DockPanel.Dock="Top">Lista progetti</Label>
-            <Button x:Name="NewProjectButton" DockPanel.Dock="Bottom" Content="Aggiungi nuovo progetto" Click="NewProjectButton_Click" Height="25" HorizontalAlignment="Stretch" Margin="0 5 0 0"/>
-            <ListBox x:Name="ProjectList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-        </DockPanel>
-        <DockPanel Name="DetailContainer" DockPanel.Dock="Right">
-            <GroupBox Header="Progetto" Margin="0,5,10,0" DockPanel.Dock="Top" VerticalAlignment="Top">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <!-- PRIMA RIGA -->
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                        <Label>Nome:</Label>
-                        <TextBlock x:Name="ProjectName" VerticalAlignment="Center" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
-                        <Label>Cliente:</Label>
-                        <TextBlock x:Name="Customer" VerticalAlignment="Center"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2">
-                        <Label>Data creazione:</Label>
-                        <TextBlock x:Name="CreationDate" VerticalAlignment="Center" />
-                    </StackPanel>
-                    <!-- SECONDA RIGA-->
-                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
-                        <Label>Tempo stimato:</Label>
-                        <TextBlock x:Name="EstimatedTime" VerticalAlignment="Center">120:00</TextBlock>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
-                        <Label>Tempo totale:</Label>
-                        <TextBlock x:Name="TotalWorkTime" VerticalAlignment="Center" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2">
-                        <Label>Attivo:</Label>
-                        <TextBlock x:Name="Active" VerticalAlignment="Center"/>
-                    </StackPanel>
-                    <!-- TERZA RIGA -->
-                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
-                        <Label>Descrizione:</Label>
-                        <TextBlock x:Name="Description" TextWrapping="Wrap" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Grid>
-            </GroupBox>
-            <DockPanel Name="MidButtons" DockPanel.Dock="Top">
-                <StackPanel Orientation="Horizontal" Margin="0 10" HorizontalAlignment="Left" DockPanel.Dock="Left">
-                    <ComboBox x:Name="ComboPerson" Width="162" Height="25"/>
-                    <Button x:Name="AddGridPerson" Padding="20 0" Height="25" Margin="10,0,0,0" Click="AddGridPerson_Click">Aggiungi persona</Button>
-                </StackPanel>
-                <Button Padding="20 0" Height="25" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="10 0">Modifica progetto</Button>
+        <GroupBox DockPanel.Dock="Left" Width="200" Header="Lista progetti" Margin="10 5 10 10">
+            <DockPanel Name="SideContainer" LastChildFill="True">
+                <Button x:Name="NewProjectButton" DockPanel.Dock="Top" Content="Aggiungi nuovo progetto" Click="NewProjectButton_Click" Height="25" Margin="0 10 0 5"/>
+                <ListBox x:Name="ProjectList" />
             </DockPanel>
-            <DataGrid Name="AssignmentGrid" GridLinesVisibility="All" Margin="0 0 10 10" MouseDoubleClick="AssignmentGrid_RowDoubleClick"
+        </GroupBox>
+        <DockPanel Name="DetailContainer" DockPanel.Dock="Right">
+            <GroupBox  DockPanel.Dock="Top" Header="Progetto" Margin="0 5 10 0">
+                <StackPanel  VerticalAlignment="Top" Orientation="Vertical">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <!-- PRIMA RIGA -->
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                            <Label>Nome:</Label>
+                            <TextBlock x:Name="ProjectName" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+                            <Label>Cliente:</Label>
+                            <TextBlock x:Name="Customer" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2">
+                            <Label>Data creazione:</Label>
+                            <TextBlock x:Name="CreationDate" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <!-- SECONDA RIGA-->
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                            <Label>Tempo stimato:</Label>
+                            <TextBlock x:Name="EstimatedTime" VerticalAlignment="Center">120:00</TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+                            <Label>Tempo totale:</Label>
+                            <TextBlock x:Name="TotalWorkTime" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2">
+                            <Label>Attivo:</Label>
+                            <TextBlock x:Name="Active" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <!-- TERZA RIGA -->
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+                            <Label>Descrizione:</Label>
+                            <TextBlock x:Name="Description" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                    <Button Padding="20 0" Height="25" HorizontalAlignment="Right" Margin="5">Modifica progetto</Button>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Assignments" DockPanel.Dock="Top" Margin="0 5 10 10">
+                <DockPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 10" HorizontalAlignment="Left" DockPanel.Dock="Top">
+                        <ComboBox x:Name="ComboPerson" Width="162" Height="25"/>
+                        <Button x:Name="AddGridPerson" Padding="20 0" Height="25" Margin="10,0,0,0" Click="AddGridPerson_Click">Aggiungi persona</Button>
+                    </StackPanel>
+                    <DataGrid Name="AssignmentGrid" GridLinesVisibility="All" MouseDoubleClick="AssignmentGrid_RowDoubleClick"
                       AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
                       DataContext="{StaticResource ItemCollectionViewSource}"
                       ItemsSource="{Binding}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Nome" Binding="{Binding name}"/>
-                    <DataGridTextColumn Header="Tempo totale" Binding="{Binding time}"/>
-                    <DataGridTextColumn Header="Attivo" Binding="{Binding active}" />
-                </DataGrid.Columns>
-            </DataGrid>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Nome" Binding="{Binding name}" Width="1*"/>
+                            <DataGridTextColumn Header="Tempo totale" Binding="{Binding time}" Width="1*"/>
+                            <DataGridTextColumn Header="Attivo" Binding="{Binding active}" Width="1*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </GroupBox>
         </DockPanel>
     </DockPanel>
 </Window>
