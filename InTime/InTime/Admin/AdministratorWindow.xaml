@@ -74,9 +74,9 @@
             <DockPanel Name="MidButtons" DockPanel.Dock="Top">
                 <StackPanel Orientation="Horizontal" Margin="0 10" HorizontalAlignment="Left" DockPanel.Dock="Left">
                     <ComboBox x:Name="ComboPerson" Width="162" Height="25"/>
-                    <Button x:Name="AddGridPerson" Width="90" Height="25" Margin="10,0,0,0" Click="AddGridPerson_Click">Aggiungi</Button>
+                    <Button x:Name="AddGridPerson" Padding="20 0" Height="25" Margin="10,0,0,0" Click="AddGridPerson_Click">Aggiungi persona</Button>
                 </StackPanel>
-                <Button Width="90" Height="25" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="10 0">Modifica</Button>
+                <Button Padding="20 0" Height="25" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="10 0">Modifica progetto</Button>
             </DockPanel>
             <DataGrid Name="AssignmentGrid" GridLinesVisibility="All" Margin="0 0 10 10" MouseDoubleClick="AssignmentGrid_RowDoubleClick"
                       AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
