@@ -28,7 +28,9 @@ namespace InTime.Admin
         InTimeDbEntities intimeDb = new InTimeDbEntities();
         private List<Project> projectList;
         private List<Person> personList;
+
         private Project selectedProject;
+        private ListBoxItem selectedListBoxProject;
 
         private static AdministratorWindow administratorWindow; // per singleton
 
@@ -37,7 +39,11 @@ namespace InTime.Admin
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
             GetProjectsInList();
-            GetPeopleListInComboBox();
+
+            DbSet<Person> personDbList = intimeDb.People;
+            personList = (from Person in personDbList
+                          orderby Person.PersonName
+                          select Person).ToList();
         }
 
         public static void IsOpened()
@@ -96,11 +102,84 @@ namespace InTime.Admin
 
         private void ProjectSelected(object sender, RoutedEventArgs e)
         {
+            selectedListBoxProject = (ListBoxItem)sender;
+            PopulateSelectedProject(selectedListBoxProject);
+        }
+
+        public void GetPeopleListInComboBox(List<Assignment> assignmentList)
+        {
+            ComboPerson.Items.Clear();
+
+            foreach (Person person in personList)
+            {
+                ComboBoxItem comboItem = new ComboBoxItem();
+                comboItem.Content = person.PersonName;
+                comboItem.Tag = person.Id;
+                ComboPerson.Items.Add(comboItem);
+
+                foreach (Assignment assignment in assignmentList)
+                {
+                    if (assignment.PersonId == person.Id)
+                    {
+                        ComboPerson.Items.Remove(comboItem);
+                    }
+                }
+            }
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void AddPerson_Click(object sender, RoutedEventArgs e)
+        {
+            AddPersonWindow addPersonWindow = new AddPersonWindow();
+            addPersonWindow.Show();
+        }
+
+        private void AddGridPerson_Click(object sender, RoutedEventArgs e)
+        {
+            if(selectedProject != null)
+            {
+                NewAssignment(selectedProject.Id);
+            }
+        }
+
+        private void NewAssignment(int projectId)
+        {
+            if(ComboPerson.SelectedItem != null)
+            {
+                int personId = (int)((ComboBoxItem)ComboPerson.SelectedItem).Tag;
+
+                Assignment newAssignment = new Assignment
+                {
+                    PersonId = personId,
+                    ProjectId = projectId,
+                    Date = DateTime.Now,
+                    Active = true
+                };
+
+                intimeDb.Assignments.Add(newAssignment);
+                intimeDb.SaveChanges();
+
+                PopulateSelectedProject(selectedListBoxProject);
+            }
+        }
+
+        private void AssignmentGrid_RowDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            AssignmentForDataGrid ass = AssignmentGrid.SelectedItem as AssignmentForDataGrid;
+
+            AssignmentDetailWindow assignment = new AssignmentDetailWindow(ass.personId, selectedProject.Id);
+        }
+
+        private void PopulateSelectedProject(ListBoxItem listBoxProject)
+        {
             DbSet<TimeTrack> timeTracksDBSet = intimeDb.TimeTracks;
             DbSet<Assignment> AssignmentsDBSet = intimeDb.Assignments;
-
-            ListBoxItem itm = (ListBoxItem)sender;
-            int projectId = (int)itm.Tag;
+            
+            int projectId = (int)listBoxProject.Tag;
 
 
             // POPOLA LA DATAGRID
@@ -119,12 +198,12 @@ namespace InTime.Admin
                 int personId = assignment.PersonId;
 
                 List<TimeTrack> timetracksList = (from TimeTrack in timeTracksDBSet // seleziona tutti i timetrack di UNA persona per IL progetto selezionato
-                                  where TimeTrack.ProjectId == projectId
-                                  where TimeTrack.PersonId == personId
-                                  select TimeTrack).ToList();
+                                                  where TimeTrack.ProjectId == projectId
+                                                  where TimeTrack.PersonId == personId
+                                                  select TimeTrack).ToList();
 
                 long personTotalTicks = 0;
-                foreach(TimeTrack track in timetracksList) // calcola il tempo totale della persona
+                foreach (TimeTrack track in timetracksList) // calcola il tempo totale della persona
                 {
                     personTotalTicks += (long)track.WorkTime;
                 }
@@ -134,9 +213,10 @@ namespace InTime.Admin
 
                 AssignmentForDataGrid assignmentForDataGrid = new AssignmentForDataGrid(); // creazione Assignment per DataGrid
 
-                foreach(Person person in personList)
+                // LISTA DI PERSONE
+                foreach (Person person in personList)
                 {
-                    if(personId == person.Id)
+                    if (personId == person.Id)
                     {
                         assignmentForDataGrid.name = person.PersonName;
                     }
@@ -147,6 +227,8 @@ namespace InTime.Admin
                 dataGridAssignments.Add(assignmentForDataGrid);
             }
 
+            // COMBOBOX: FILTRO LISTA PERSONE
+            GetPeopleListInComboBox(assignmentList);
 
             // PROPRIETà DEL PROGETTO (GROUPBOX)
 
@@ -160,7 +242,7 @@ namespace InTime.Admin
 
             TimeSpan projectTotalWorktime = TimeSpan.FromTicks(projectTotalTicks);
             TotalWorkTime.Text = TimeTracker.ToString(projectTotalWorktime);
-            
+
             ProjectName.Text = selectedProject.ProjectName; // not null
             Customer.Text = selectedProject.Customer; // null
             Description.Text = selectedProject.Description; // null
@@ -181,71 +263,10 @@ namespace InTime.Admin
             else
                 Active.Text = "No";
 
-
             // BINDING
             CollectionViewSource itemCollectionViewSource;
             itemCollectionViewSource = (CollectionViewSource)(FindResource("ItemCollectionViewSource"));
             itemCollectionViewSource.Source = dataGridAssignments;
-        }
-
-        public void GetPeopleListInComboBox()
-        {
-            DbSet<Person> personDbList = intimeDb.People;
-
-            personList = (from Person in personDbList
-                        orderby Person.PersonName
-                        select Person).ToList();
-
-            ComboPerson.Items.Clear();
-
-            foreach (Person person in personList)
-            {
-                ComboBoxItem comboItem = new ComboBoxItem();
-                comboItem.Content = person.PersonName;
-                comboItem.Tag = person.Id;
-                ComboPerson.Items.Add(comboItem);
-            }
-
-            // TO DO: fare in modo che se una persona sta già nella datagrid non compaia qui
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void AddPerson_Click(object sender, RoutedEventArgs e)
-        {
-            AddPersonWindow addPersonWindow = new AddPersonWindow();
-            addPersonWindow.Show();
-        }
-
-        private void AddGridPerson_Click(object sender, RoutedEventArgs e)
-        {
-            NewAssignment(selectedProject.Id);
-        }
-
-        private void NewAssignment(int projectId)
-        {
-            int personId = (int)((ComboBoxItem)ComboPerson.SelectedItem).Tag;
-
-            Assignment newAssignment = new Assignment
-            {
-                PersonId = personId,
-                ProjectId = projectId,
-                Date = DateTime.Now,
-                Active = true
-            };
-
-            intimeDb.Assignments.Add(newAssignment);
-            intimeDb.SaveChanges();
-        }
-
-        private void AssignmentGrid_RowDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            AssignmentForDataGrid ass = AssignmentGrid.SelectedItem as AssignmentForDataGrid;
-
-            AssignmentDetailWindow assignment = new AssignmentDetailWindow(ass.personId, selectedProject.Id);
         }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InTime.User"
         mc:Ignorable="d"
-        Title="UserWindow" Height="700" Width="800">
+        Title="UserWindow" Height="500" Width="800">
     <DockPanel Name="FullContainer">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
@@ -19,7 +19,7 @@
             <ListBox x:Name="AssignmentList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
         </DockPanel>
         <DockPanel Name="DetailContainer" DockPanel.Dock="Right">
-            
+
             <GroupBox Header="Progetto" Margin="0,5,10,5" DockPanel.Dock="Top" VerticalAlignment="Top">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -65,13 +65,7 @@
                     </StackPanel>
                 </Grid>
             </GroupBox>
-            
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="10">
-                <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">OK</Button>
-                <Button x:Name="CancelButton" VerticalAlignment="Bottom" Margin="10" Height="25" Width="90" Click="CancelButton_Click">Annulla</Button>
-                <Button VerticalAlignment="Bottom" Margin="10" Height="25" Width="90">Applica</Button>
-            </StackPanel>
-            <DataGrid Name="NameGrid" AutoGenerateColumns="False" GridLinesVisibility="All" ItemsSource="{Binding}" Margin="0 5 10 0">
+            <DataGrid Name="NameGrid" AutoGenerateColumns="False" GridLinesVisibility="All" ItemsSource="{Binding}" Margin="0 5 10 10">
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="ColumnName" Header="Nome" Width="300" Binding="{Binding name}" />
                     <DataGridTextColumn x:Name="ColumnTime" Header="Tempo" Width="400" Binding="{Binding time}"/>
