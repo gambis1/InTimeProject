@@ -43,27 +43,7 @@ namespace InTime.Admin
                           select Person).ToList();
         }
 
-        public static void IsOpened()
-        {
-            if (administratorWindow == null)
-            {
-                administratorWindow = new AdministratorWindow();
-                administratorWindow.Closed += (sender, args) => administratorWindow = null;
-                administratorWindow.Show();
-            }
-        }
-
-        // aggiungere un nuovo progetto al database
-        private void NewProjectButton_Click(object sender, RoutedEventArgs e)
-        {   
-                InTime.Project newProject = new InTime.Project();
-                newProject.ProjectName = "Nuovo progetto";
-
-                intimeDb.Projects.Add(newProject);
-                intimeDb.SaveChanges();
-
-                GetProjectsInList(); 
-        }
+        /*-------------------------------------------------------------- TASTI --------------------------------------------------------------*/
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
@@ -76,6 +56,30 @@ namespace InTime.Admin
             this.Close();
         }
 
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void AddPerson_Click(object sender, RoutedEventArgs e)
+        {
+            AddPersonWindow addPersonWindow = new AddPersonWindow();
+            addPersonWindow.Show();
+        }
+
+        private void NewProjectButton_Click(object sender, RoutedEventArgs e)
+        {   
+            InTime.Project newProject = new InTime.Project();
+            newProject.ProjectName = "Nuovo progetto";
+
+            intimeDb.Projects.Add(newProject);
+            intimeDb.SaveChanges();
+
+            GetProjectsInList(); 
+        }
+
+        /*-------------------------------------------------------------- LISTBOX --------------------------------------------------------------*/
+
         private void GetProjectsInList()
         {
             DbSet<Project> projectDbList = intimeDb.Projects;
@@ -83,7 +87,7 @@ namespace InTime.Admin
             projectList =
                 (from Project in projectDbList
                  orderby Project.Id
-                select Project).ToList();
+                 select Project).ToList();
 
             ProjectList.Items.Clear();
 
@@ -102,6 +106,8 @@ namespace InTime.Admin
             selectedListBoxProject = (ListBoxItem)sender;
             PopulateSelectedProject(selectedListBoxProject);
         }
+
+        /*-------------------------------------------------------------- COMBOBOX --------------------------------------------------------------*/
 
         public void GetPeopleListInComboBox(List<Assignment> assignmentList)
         {
@@ -124,20 +130,9 @@ namespace InTime.Admin
             }
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void AddPerson_Click(object sender, RoutedEventArgs e)
-        {
-            AddPersonWindow addPersonWindow = new AddPersonWindow();
-            addPersonWindow.Show();
-        }
-
         private void AddGridPerson_Click(object sender, RoutedEventArgs e)
         {
-            if(selectedProject != null)
+            if (selectedProject != null)
             {
                 NewAssignment(selectedProject.Id);
             }
@@ -164,12 +159,15 @@ namespace InTime.Admin
             }
         }
 
+        /*-------------------------------------------------------------- DETTAGLIO ASSIGNMENT --------------------------------------------------------------*/
+
         private void AssignmentGrid_RowDoubleClick(object sender, MouseButtonEventArgs e)
         {
             AssignmentForDataGrid ass = AssignmentGrid.SelectedItem as AssignmentForDataGrid;
-
             AssignmentDetailWindow assignment = new AssignmentDetailWindow(ass.personId, selectedProject.Id);
         }
+
+        /*-------------------------------------------------------------- POPOLARE CONTENUTI --------------------------------------------------------------*/
 
         private void PopulateSelectedProject(ListBoxItem listBoxProject)
         {
@@ -243,7 +241,15 @@ namespace InTime.Admin
             ProjectName.Text = selectedProject.ProjectName; // not null
             Customer.Text = selectedProject.Customer; // null
             Description.Text = selectedProject.Description; // null
-            EstimatedTime.Text = selectedProject.ProjectAssignedTime.ToString(); // null
+            if (selectedProject.ProjectAssignedTime != null)
+            {
+                TimeSpan timespan = TimeSpan.FromTicks((long)selectedProject.ProjectAssignedTime);
+                EstimatedTime.Text = TimeTracker.ToString(timespan);
+            }
+            else
+            {
+                EstimatedTime.Text = "";
+            }
 
             DateTime? creationDate = selectedProject.DateCreation; // null
             if (creationDate != null)
@@ -264,6 +270,18 @@ namespace InTime.Admin
             CollectionViewSource itemCollectionViewSource;
             itemCollectionViewSource = (CollectionViewSource)(FindResource("ItemCollectionViewSource"));
             itemCollectionViewSource.Source = dataGridAssignments;
+        }
+
+        /*-------------------------------------------------------------- SINGLETON --------------------------------------------------------------*/
+
+        public static void IsOpened()
+        {
+            if (administratorWindow == null)
+            {
+                administratorWindow = new AdministratorWindow();
+                administratorWindow.Closed += (sender, args) => administratorWindow = null;
+                administratorWindow.Show();
+            }
         }
     }
 }

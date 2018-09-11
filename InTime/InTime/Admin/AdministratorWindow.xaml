@@ -57,22 +57,25 @@
                         <!-- SECONDA RIGA-->
                         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
                             <Label>Tempo stimato:</Label>
-                            <TextBlock x:Name="EstimatedTime" VerticalAlignment="Center">120:00</TextBlock>
+                            <TextBlock x:Name="EstimatedTime" VerticalAlignment="Center"></TextBlock>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
-                            <Label>Tempo totale:</Label>
-                            <TextBlock x:Name="TotalWorkTime" VerticalAlignment="Center" />
+                            <Label>Scadenza:</Label>
+                            <TextBlock x:Name="Duetime" VerticalAlignment="Center" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2">
                             <Label>Attivo:</Label>
                             <TextBlock x:Name="Active" VerticalAlignment="Center"/>
                         </StackPanel>
                         <!-- TERZA RIGA -->
-                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
-                            <Label>Descrizione:</Label>
-                            <TextBlock x:Name="Description" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
+                            <Label>Tempo totale:</Label>
+                            <TextBlock x:Name="TotalWorkTime" VerticalAlignment="Center" />
                         </StackPanel>
                         <!-- QUARTA RIGA -->
+                        <WrapPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                            <TextBlock x:Name="Description" TextWrapping="Wrap" VerticalAlignment="Center" Padding="5 5 0 0"/>
+                        </WrapPanel>
                         <Button Grid.Row="3" Grid.Column="2" Padding="20 0" Height="25" HorizontalAlignment="Right" Margin="5">Modifica progetto</Button>
                     </Grid>
                 </StackPanel>

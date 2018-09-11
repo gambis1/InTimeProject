@@ -108,7 +108,7 @@ namespace InTime.Logic
 
         public static string ToString(TimeSpan timeSpan)
         {
-            return String.Format("{0:00}:{1:00}:{2:00}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds); ;
+            return String.Format("{0:00}:{1:00}:{2:00}", timeSpan.TotalHours, timeSpan.Minutes, timeSpan.Seconds);
         } 
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InTime.Logic;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -82,7 +83,7 @@ namespace InTime.User
                 ListBoxItem itm = new ListBoxItem();
 
                 itm.Content = assignment.Project.ProjectName;
-                itm.Tag = assignment.ProjectId;
+                itm.Tag = assignment.Project;
                 
                 // FORSE HO CAPITO COME FUNZIONA ENTITY FRAMEWORK cit.
                 //foreach (Project project in projectList)
@@ -99,27 +100,49 @@ namespace InTime.User
             }
         }
 
-        /*-------------------------------------------------------------- POPOLARE CONTENUTI --------------------------------------------------------------*/
-
         private void AssignmentSelected(object sender, RoutedEventArgs e)
         {
-            //selectedListBoxAssignment = (ListBoxItem)sender;
-            //PopulateSelectedAssignment(selectedListBoxAssignment);
+            ListBoxItem selectedListBoxAssignment = (ListBoxItem)sender;
+            PopulateSelectedAssignment(selectedListBoxAssignment);
+        }
 
+        /*-------------------------------------------------------------- POPOLARE CONTENUTI --------------------------------------------------------------*/
 
-            ListBoxItem itm = (ListBoxItem)sender;
-            string projectName = itm.Content.ToString();
-            ProjectName.Text = projectName;
+        private void PopulateSelectedAssignment(ListBoxItem listBoxAssignment)
+        {
+            Project currentProject = (Project)listBoxAssignment.Tag;
 
-            DbSet<Project> projectList = intimeDb.Projects;
+            //string projectName = listBoxAssignment.Content.ToString();
+            //ProjectName.Text = projectName;
 
-            var queryDesc = (from Project in projectList
-                             where Project.ProjectName == projectName
-                             select Project.Description).FirstOrDefault();
+            //DbSet<Project> projectList = intimeDb.Projects;
 
-            AssignmentDescription.Text = queryDesc;
+            //var queryDesc = (from Project in projectList
+            //                 where Project.ProjectName == projectName
+            //                 select Project.Description).FirstOrDefault();
 
-            DbSet<TimeTrack> timeTracks = intimeDb.TimeTracks;
+            // PROPRIETA' DEL PROGETTO
+
+            ProjectName.Text = currentProject.ProjectName;
+            AssignmentDescription.Text = currentProject.Description;
+            Customer.Text = currentProject.Customer;
+            if(currentProject.DateCreation != null)
+            {
+                CreationDate.Text = ((DateTime)currentProject.DateCreation).ToShortDateString();
+            }
+            else
+            {
+                CreationDate.Text = "";
+            }
+
+            if(currentProject.ProjectAssignedTime != null)
+            {
+                TimeSpan timespan = TimeSpan.FromTicks((long)currentProject.ProjectAssignedTime);
+                EstimatedTime.Text = TimeTracker.ToString(timespan);
+            }
+            
+
+            //DbSet<TimeTrack> timeTracks = intimeDb.TimeTracks;
 
             //var queryTime = (from TimeTrack in timeTracks
             //                 join Project in projectList on TimeTrack.ProjectId equals Project.Id

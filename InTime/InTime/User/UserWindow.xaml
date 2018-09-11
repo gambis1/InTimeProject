@@ -18,7 +18,7 @@
             <ListBox x:Name="AssignmentList" Margin="5" />
         </GroupBox>
         <DockPanel Name="DetailContainer" DockPanel.Dock="Right">
-            <GroupBox Header="Info progetto" Margin="0 5 10 0" DockPanel.Dock="Top" VerticalAlignment="Top">
+            <GroupBox Header="Info incarico" Margin="0 5 10 0" DockPanel.Dock="Top" VerticalAlignment="Top">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -33,7 +33,7 @@
                     </Grid.RowDefinitions>
                     <!-- PRIMA RIGA-->
                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                        <Label>Nome:</Label>
+                        <Label>Nome progetto:</Label>
                         <TextBlock x:Name="ProjectName" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
@@ -47,7 +47,7 @@
                     <!-- SECONDA RIGA-->
                     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
                         <Label>Tempo stimato:</Label>
-                        <TextBlock x:Name="EstimatedTime" VerticalAlignment="Center">120:00</TextBlock>
+                        <TextBlock x:Name="EstimatedTime" VerticalAlignment="Center"></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
                         <Label>Tempo totale:</Label>
@@ -63,11 +63,7 @@
                         <TextBlock x:Name="AssignmentDescription" TextWrapping="Wrap" VerticalAlignment="Center"/>
                     </StackPanel>
                     <!-- QUARTA RIGA -->
-                    <StackPanel Grid.Column="2" Grid.Row="3" Orientation="Horizontal">
-                        <Label>Traccia progetto:</Label>
-                        <RadioButton GroupName="TrackProject" IsChecked="True" VerticalAlignment="Center">Sì</RadioButton>
-                        <RadioButton GroupName="TrackProject" VerticalAlignment="Center" Margin="10 0 0 0">No</RadioButton>
-                    </StackPanel>
+                    <CheckBox IsChecked="True" VerticalAlignment="Center" Grid.Column="2" Grid.Row="3">Traccia progetto</CheckBox>
                 </Grid>
             </GroupBox>
             <GroupBox Margin="0 5 10 10" Header="Ore di lavoro svolte">
