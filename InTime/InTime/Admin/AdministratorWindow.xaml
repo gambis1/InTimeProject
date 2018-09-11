@@ -22,8 +22,8 @@
         </Menu>
         <GroupBox DockPanel.Dock="Left" Width="200" Header="Lista progetti" Margin="10 5 10 10">
             <DockPanel Name="SideContainer" LastChildFill="True">
-                <Button x:Name="NewProjectButton" DockPanel.Dock="Top" Content="Aggiungi nuovo progetto" Click="NewProjectButton_Click" Height="25" Margin="0 10 0 5"/>
-                <ListBox x:Name="ProjectList" />
+                <Button x:Name="NewProjectButton" DockPanel.Dock="Bottom" Content="Aggiungi nuovo progetto" Click="NewProjectButton_Click" Height="25" Margin="0 10 0 5"/>
+                <ListBox x:Name="ProjectList" Margin="0 10 0 0"/>
             </DockPanel>
         </GroupBox>
         <DockPanel Name="DetailContainer" DockPanel.Dock="Right">
@@ -79,7 +79,7 @@
                 <DockPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 10 0 10" HorizontalAlignment="Left" DockPanel.Dock="Top">
                         <ComboBox x:Name="ComboPerson" Width="162" Height="25"/>
-                        <Button x:Name="AddGridPerson" Padding="20 0" Height="25" Margin="10,0,0,0" Click="AddGridPerson_Click">Aggiungi persona</Button>
+                        <Button x:Name="AddGridPerson" Padding="20 0" Height="25" Margin="10,0,0,0" Click="AddGridPerson_Click" Background="Green" Foreground="White" FontWeight="Bold">+</Button>
                     </StackPanel>
                     <DataGrid Name="AssignmentGrid" GridLinesVisibility="All" MouseDoubleClick="AssignmentGrid_RowDoubleClick"
                       AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
