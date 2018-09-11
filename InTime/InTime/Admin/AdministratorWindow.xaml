@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InTime.Admin"
         mc:Ignorable="d"
-        Title="InTime - Amministratore" Height="500" Width="800" MinHeight="300" MinWidth="700">
+        Title="InTime - Amministratore" Height="600" Width="800" MinHeight="300" MinWidth="700">
     <Window.Resources>
         <CollectionViewSource x:Key="ItemCollectionViewSource"  CollectionViewType="ListCollectionView"/>
     </Window.Resources>
@@ -22,12 +22,12 @@
         </Menu>
         <GroupBox DockPanel.Dock="Left" Width="200" Header="Lista progetti" Margin="10 5 10 10">
             <DockPanel Name="SideContainer" LastChildFill="True">
-                <Button x:Name="NewProjectButton" DockPanel.Dock="Bottom" Content="Aggiungi nuovo progetto" Click="NewProjectButton_Click" Height="25" Margin="0 10 0 5"/>
-                <ListBox x:Name="ProjectList" Margin="0 10 0 0"/>
+                <Button x:Name="NewProjectButton" DockPanel.Dock="Bottom" Content="Aggiungi nuovo progetto" Click="NewProjectButton_Click" Height="25" Margin="5 0 5 5"/>
+                <ListBox x:Name="ProjectList" Margin="5"/>
             </DockPanel>
         </GroupBox>
         <DockPanel Name="DetailContainer" DockPanel.Dock="Right">
-            <GroupBox  DockPanel.Dock="Top" Header="Progetto" Margin="0 5 10 0">
+            <GroupBox DockPanel.Dock="Top" Header="Info progetto" Margin="0 5 10 0">
                 <StackPanel  VerticalAlignment="Top" Orientation="Vertical">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -36,6 +36,7 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
@@ -67,21 +68,22 @@
                             <TextBlock x:Name="Active" VerticalAlignment="Center"/>
                         </StackPanel>
                         <!-- TERZA RIGA -->
-                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
                             <Label>Descrizione:</Label>
                             <TextBlock x:Name="Description" TextWrapping="Wrap" VerticalAlignment="Center"/>
                         </StackPanel>
+                        <!-- QUARTA RIGA -->
+                        <Button Grid.Row="3" Grid.Column="2" Padding="20 0" Height="25" HorizontalAlignment="Right" Margin="5">Modifica progetto</Button>
                     </Grid>
-                    <Button Padding="20 0" Height="25" HorizontalAlignment="Right" Margin="5">Modifica progetto</Button>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="Assignments" DockPanel.Dock="Top" Margin="0 5 10 10">
+            <GroupBox Header="Persone incaricate" DockPanel.Dock="Top" Margin="0 5 10 10">
                 <DockPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0 10 0 10" HorizontalAlignment="Left" DockPanel.Dock="Top">
+                    <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Left" DockPanel.Dock="Top">
                         <ComboBox x:Name="ComboPerson" Width="162" Height="25"/>
                         <Button x:Name="AddGridPerson" Padding="20 0" Height="25" Margin="10,0,0,0" Click="AddGridPerson_Click" Background="Green" Foreground="White" FontWeight="Bold">+</Button>
                     </StackPanel>
-                    <DataGrid Name="AssignmentGrid" GridLinesVisibility="All" MouseDoubleClick="AssignmentGrid_RowDoubleClick"
+                    <DataGrid Name="AssignmentGrid" GridLinesVisibility="All" MouseDoubleClick="AssignmentGrid_RowDoubleClick" Margin="5"
                       AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
                       DataContext="{StaticResource ItemCollectionViewSource}"
                       ItemsSource="{Binding}">

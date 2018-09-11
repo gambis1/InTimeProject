@@ -20,9 +20,6 @@ using System.Xml.Linq;
 
 namespace InTime.Admin
 {
-    /// <summary>
-    /// Logica di interazione per MainWindow.xaml
-    /// </summary>
     public partial class AdministratorWindow : Window
     {
         InTimeDbEntities intimeDb = new InTimeDbEntities();

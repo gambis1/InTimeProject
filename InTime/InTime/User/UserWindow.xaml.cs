@@ -15,51 +15,98 @@ using System.Windows.Shapes;
 
 namespace InTime.User
 {
-    /// <summary>
-    /// Interaction logic for UserWindow.xaml
-    /// </summary>
     public partial class UserWindow : Window
     {
-        InTimeDbEntities intimeDb = new InTimeDbEntities();
+        private static InTimeDbEntities intimeDb = new InTimeDbEntities();
         private static UserWindow userWindow;
+
+        private static Guid userUniqueIdentifier;
+        private static Person currentUser;
+
+        private static List<Project> userProjects;
+        private List<Assignment> userAssignments;
 
         public UserWindow()
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
+            currentUser = GetCurrentUser();
             GetDbData();
         }
+
+        /*-------------------------------------------------------------- TASTI --------------------------------------------------------------*/
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+        /*-------------------------------------------------------------- LISTBOX --------------------------------------------------------------*/
+
+        public Person GetCurrentUser()
+        {
+            // TO DO: OTTENERE userUniqueIdentifier LEGGENDO FILE SETTINGS
+            // TO DO 2: userUniqueIdentifier STATICA ALL'AVVIO DI MAINWINDOW
+
+            userUniqueIdentifier = new Guid("fca345b4-e009-4fa3-a9b6-64210b584199");
+
+            DbSet<Person> personDbList = intimeDb.People;
+            return (from Person in personDbList
+                    where Person.AccessCode == userUniqueIdentifier
+                    select Person).Single();
+        }
+
         private void GetDbData()
         {
-            DbSet<Project> projectList = intimeDb.Projects;
+            DbSet<Assignment> assignmentDBList = intimeDb.Assignments;
 
-            var query =
-                from Project in projectList
-                orderby Project.Id
-                select Project.ProjectName;
-
-            List<string> list = query.ToList();
+            userAssignments =
+                (from Assignment in assignmentDBList
+                 orderby Assignment.Active
+                 where Assignment.PersonId == currentUser.Id
+                 where Assignment.Active == true // assignment attivo
+                 select Assignment).ToList();
 
             AssignmentList.Items.Clear();
 
-            foreach (string projectName in list)
+            // FORSE HO CAPITO COME FUNZIONA ENTITY FRAMEWORK
+            //DbSet<Project> projectDBList = intimeDb.Projects;
+            //List<Project> projectList = // tutti i progetti
+            //    (from Project in projectDBList
+            //     orderby Project.Id
+            //     select Project).ToList();
+            //userProjects = new List<Project>(); // da usare per elencare tutti i progetti dell'utente
+
+            foreach (Assignment assignment in userAssignments)
             {
                 ListBoxItem itm = new ListBoxItem();
-                itm.Content = projectName;
-                AssignmentList.Items.Add(itm);
-                itm.Selected += new RoutedEventHandler(ListBoxItem_Selected);
-            }
 
+                itm.Content = assignment.Project.ProjectName;
+                itm.Tag = assignment.ProjectId;
+                
+                // FORSE HO CAPITO COME FUNZIONA ENTITY FRAMEWORK cit.
+                //foreach (Project project in projectList)
+                //{
+                //    if (project.Id == assignment.ProjectId)
+                //    {
+                //        userProjects.Add(project); // aggiunge ai progetti dell'utente
+                //        itm.Content = project.ProjectName;
+                //    }
+                //}
+
+                AssignmentList.Items.Add(itm);
+                itm.Selected += new RoutedEventHandler(AssignmentSelected);
+            }
         }
 
-        private void ListBoxItem_Selected(object sender, RoutedEventArgs e)
+        /*-------------------------------------------------------------- POPOLARE CONTENUTI --------------------------------------------------------------*/
+
+        private void AssignmentSelected(object sender, RoutedEventArgs e)
         {
+            //selectedListBoxAssignment = (ListBoxItem)sender;
+            //PopulateSelectedAssignment(selectedListBoxAssignment);
+
+
             ListBoxItem itm = (ListBoxItem)sender;
             string projectName = itm.Content.ToString();
             ProjectName.Text = projectName;
@@ -83,10 +130,7 @@ namespace InTime.User
             // TO DO: aggiungere metodo che aggiorna anche la datagrid
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+        /*-------------------------------------------------------------- SINGLETON --------------------------------------------------------------*/
 
         public static void IsOpened()
         {
