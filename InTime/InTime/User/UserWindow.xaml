@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:InTime.User"
         mc:Ignorable="d"
         Title="UserWindow" Height="600" Width="800">
+    <Window.Resources>
+        <CollectionViewSource x:Key="ItemCollectionViewSource" CollectionViewType="ListCollectionView"/>
+    </Window.Resources>
     <DockPanel Name="FullContainer">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
@@ -53,27 +56,21 @@
                         <Label>Tempo totale:</Label>
                         <TextBlock x:Name="TotalWorkTime" VerticalAlignment="Center" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2">
-                        <Label>Attivo:</Label>
-                        <TextBlock x:Name="Active" VerticalAlignment="Center"/>
-                    </StackPanel>
                     <!-- TERZA RIGA -->
-                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
-                        <Label>Compito:</Label>
-                        <TextBlock x:Name="AssignmentDescription" TextWrapping="Wrap" VerticalAlignment="Center"/>
-                    </StackPanel>
+                    <WrapPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                        <TextBlock x:Name="AssignmentDescription" TextWrapping="Wrap" VerticalAlignment="Center" Padding="5 5 0 0"/>
+                    </WrapPanel>
                     <!-- QUARTA RIGA -->
-                    <CheckBox IsChecked="True" VerticalAlignment="Center" Grid.Column="2" Grid.Row="3">Traccia progetto</CheckBox>
+                    <CheckBox IsChecked="True" VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" Margin="5">Traccia progetto</CheckBox>
                 </Grid>
             </GroupBox>
             <GroupBox Margin="0 5 10 10" Header="Ore di lavoro svolte">
-                <DataGrid Name="TimetrackGrid" GridLinesVisibility="All" Margin="5"
-                      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
-                      
+                <DataGrid Name="TimetrackGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
+                      DataContext="{StaticResource ItemCollectionViewSource}"
                       ItemsSource="{Binding}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn x:Name="ColumnName" Header="Nome" Width="1*" Binding="{Binding name}" />
-                        <DataGridTextColumn x:Name="ColumnTime" Header="Tempo" Width="1*" Binding="{Binding time}" />
+                        <DataGridTextColumn Header="Data" Binding="{Binding WorkDate}" Width="1*" />
+                        <DataGridTextColumn Header="Tempo di lavoro" Binding="{Binding WorkTime}" Width="1*" />
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>

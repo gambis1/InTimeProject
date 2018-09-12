@@ -61,7 +61,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
                             <Label>Scadenza:</Label>
-                            <TextBlock x:Name="Duetime" VerticalAlignment="Center" />
+                            <TextBlock x:Name="DueDate" VerticalAlignment="Center" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2">
                             <Label>Attivo:</Label>

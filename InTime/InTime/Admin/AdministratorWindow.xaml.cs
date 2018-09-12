@@ -204,22 +204,11 @@ namespace InTime.Admin
                 }
                 projectTotalTicks += personTotalTicks;
 
-                TimeSpan personTotalWorktime = TimeSpan.FromTicks(personTotalTicks);
-
+                // LISTA ASSIGNMENTS
                 AssignmentForDataGrid assignmentForDataGrid = new AssignmentForDataGrid(); // creazione Assignment per DataGrid
 
-                // LISTA DI PERSONE
-
-                //foreach (Person person in personList)
-                //{
-                //    if (personId == person.Id)
-                //    {
-                //        assignmentForDataGrid.name = person.PersonName;
-                //    }
-                //}
-
                 assignmentForDataGrid.name = assignment.Person.PersonName;
-                assignmentForDataGrid.time = TimeTracker.ToString(personTotalWorktime);
+                assignmentForDataGrid.time = TimeTracker.ToString(TimeSpan.FromTicks(personTotalTicks));
                 assignmentForDataGrid.active = assignment.Active;
                 assignmentForDataGrid.personId = assignment.PersonId;
                 dataGridAssignments.Add(assignmentForDataGrid);
@@ -230,44 +219,47 @@ namespace InTime.Admin
 
             // PROPRIETà DEL PROGETTO (GROUPBOX)
 
-            //foreach (Project project in projectList) // pesca dalla lista dei progetti quello selezionato
-            //{
-            //    if (projectId == project.Id)
-            //    {
-            //        selectedProject = project;
-            //    }
-            //}
-
-            TimeSpan projectTotalWorktime = TimeSpan.FromTicks(projectTotalTicks);
-            TotalWorkTime.Text = TimeTracker.ToString(projectTotalWorktime);
+            TotalWorkTime.Text = TimeTracker.ToString(TimeSpan.FromTicks(projectTotalTicks));
 
             ProjectName.Text = selectedProject.ProjectName; // not null
             Customer.Text = selectedProject.Customer; // null
             Description.Text = selectedProject.Description; // null
+
             if (selectedProject.ProjectAssignedTime != null)
             {
                 TimeSpan timespan = TimeSpan.FromTicks((long)selectedProject.ProjectAssignedTime);
                 EstimatedTime.Text = TimeTracker.ToString(timespan);
-            }
+            } // null
             else
             {
                 EstimatedTime.Text = "";
             }
 
-            DateTime? creationDate = selectedProject.DateCreation; // null
-            if (creationDate != null)
+            if(selectedProject.DueDate != null)
             {
-                CreationDate.Text = ((DateTime)creationDate).ToShortDateString();
+                DueDate.Text = ((DateTime)selectedProject.DueDate).ToShortDateString();
+            } // null
+            else
+            {
+                DueDate.Text = "";
             }
+
+            if (selectedProject.DateCreation != null)
+            {
+                CreationDate.Text = ((DateTime)selectedProject.DateCreation).ToShortDateString();
+            } // null
             else
             {
                 CreationDate.Text = "";
             }
 
-            if (selectedProject.Active) // not null
+            if (selectedProject.Active) {  // not null
                 Active.Text = "Sì";
+            } // not null
             else
+            { 
                 Active.Text = "No";
+            }
 
             // BINDING
             CollectionViewSource itemCollectionViewSource;

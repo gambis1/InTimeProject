@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InTime.Admin"
         mc:Ignorable="d"
-        Title="Dettaglio ore" Height="300" Width="200" >
+        Title="Dettaglio ore" Height="300" Width="400" >
     <Window.Resources>
         <CollectionViewSource x:Key="ItemCollectionViewSource" CollectionViewType="ListCollectionView"/>
     </Window.Resources>
@@ -15,8 +15,8 @@
                       DataContext="{StaticResource ItemCollectionViewSource}"
                       ItemsSource="{Binding}" HorizontalAlignment="Stretch">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Data" Binding="{Binding WorkDate}"/>
-                <DataGridTextColumn Header="Tempo di lavoro" Binding="{Binding WorkTime}" />
+                <DataGridTextColumn Header="Data" Binding="{Binding WorkDate}" Width="1*"/>
+                <DataGridTextColumn Header="Tempo di lavoro" Binding="{Binding WorkTime}" Width="1*"/>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

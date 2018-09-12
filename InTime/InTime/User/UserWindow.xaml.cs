@@ -1,4 +1,5 @@
 ﻿using InTime.Logic;
+using InTime.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -24,7 +25,6 @@ namespace InTime.User
         private static Guid userUniqueIdentifier;
         private static Person currentUser;
 
-        private static List<Project> userProjects;
         private List<Assignment> userAssignments;
 
         public UserWindow()
@@ -32,7 +32,7 @@ namespace InTime.User
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
             currentUser = GetCurrentUser();
-            GetDbData();
+            GetAssignmentsInListbox();
         }
 
         /*-------------------------------------------------------------- TASTI --------------------------------------------------------------*/
@@ -57,7 +57,7 @@ namespace InTime.User
                     select Person).Single();
         }
 
-        private void GetDbData()
+        private void GetAssignmentsInListbox()
         {
             DbSet<Assignment> assignmentDBList = intimeDb.Assignments;
 
@@ -65,18 +65,10 @@ namespace InTime.User
                 (from Assignment in assignmentDBList
                  orderby Assignment.Active
                  where Assignment.PersonId == currentUser.Id
-                 where Assignment.Active == true // assignment attivo
+                 where Assignment.Active == true // SOLO ASSIGNMENT ATTIVO
                  select Assignment).ToList();
 
             AssignmentList.Items.Clear();
-
-            // FORSE HO CAPITO COME FUNZIONA ENTITY FRAMEWORK
-            //DbSet<Project> projectDBList = intimeDb.Projects;
-            //List<Project> projectList = // tutti i progetti
-            //    (from Project in projectDBList
-            //     orderby Project.Id
-            //     select Project).ToList();
-            //userProjects = new List<Project>(); // da usare per elencare tutti i progetti dell'utente
 
             foreach (Assignment assignment in userAssignments)
             {
@@ -84,16 +76,6 @@ namespace InTime.User
 
                 itm.Content = assignment.Project.ProjectName;
                 itm.Tag = assignment.Project;
-                
-                // FORSE HO CAPITO COME FUNZIONA ENTITY FRAMEWORK cit.
-                //foreach (Project project in projectList)
-                //{
-                //    if (project.Id == assignment.ProjectId)
-                //    {
-                //        userProjects.Add(project); // aggiunge ai progetti dell'utente
-                //        itm.Content = project.ProjectName;
-                //    }
-                //}
 
                 AssignmentList.Items.Add(itm);
                 itm.Selected += new RoutedEventHandler(AssignmentSelected);
@@ -112,21 +94,20 @@ namespace InTime.User
         {
             Project currentProject = (Project)listBoxAssignment.Tag;
 
-            //string projectName = listBoxAssignment.Content.ToString();
-            //ProjectName.Text = projectName;
-
-            //DbSet<Project> projectList = intimeDb.Projects;
-
-            //var queryDesc = (from Project in projectList
-            //                 where Project.ProjectName == projectName
-            //                 select Project.Description).FirstOrDefault();
-
             // PROPRIETA' DEL PROGETTO
-
             ProjectName.Text = currentProject.ProjectName;
-            AssignmentDescription.Text = currentProject.Description;
             Customer.Text = currentProject.Customer;
-            if(currentProject.DateCreation != null)
+            if (currentProject.ProjectAssignedTime != null)
+            {
+                TimeSpan timespan = TimeSpan.FromTicks((long)currentProject.ProjectAssignedTime);
+                EstimatedTime.Text = TimeTracker.ToString(timespan);
+            }
+            else
+            {
+                EstimatedTime.Text = "";
+            }
+            // TO DO: TEMPO TOTALE
+            if (currentProject.DateCreation != null)
             {
                 CreationDate.Text = ((DateTime)currentProject.DateCreation).ToShortDateString();
             }
@@ -134,23 +115,42 @@ namespace InTime.User
             {
                 CreationDate.Text = "";
             }
+            // TO DO: TRACCIA: Sì / NO
+            AssignmentDescription.Text = currentProject.Description;
 
-            if(currentProject.ProjectAssignedTime != null)
+            DbSet<TimeTrack> timeTracksDBSet = intimeDb.TimeTracks;
+
+            // TUTTI I TIMETRACK DEL PROGETTO
+            List<TimeTrack> timetracksList = (from TimeTrack in timeTracksDBSet
+                             where TimeTrack.ProjectId == currentProject.Id
+                             where TimeTrack.PersonId == currentUser.Id
+                             select TimeTrack).ToList();
+
+            long personTotalTicks = 0;
+            foreach (TimeTrack track in timetracksList) // calcola il tempo totale della persona
             {
-                TimeSpan timespan = TimeSpan.FromTicks((long)currentProject.ProjectAssignedTime);
-                EstimatedTime.Text = TimeTracker.ToString(timespan);
+                personTotalTicks += (long)track.WorkTime;
             }
-            
+            TotalWorkTime.Text = TimeTracker.ToString(TimeSpan.FromTicks(personTotalTicks));
 
-            //DbSet<TimeTrack> timeTracks = intimeDb.TimeTracks;
+            // LISTA TIMETRACKS DATAGRID
 
-            //var queryTime = (from TimeTrack in timeTracks
-            //                 join Project in projectList on TimeTrack.ProjectId equals Project.Id
-            //                 select TimeTrack.WorkTime).FirstOrDefault().ToString();
+            List<TimeTrackViewModel> dataGridTimeTracks = new List<TimeTrackViewModel>();
 
-            //WorkTime.Text = queryTime;
+            foreach (TimeTrack timeTrack in timetracksList)
+            {
+                TimeTrackViewModel timetrackvm = new TimeTrackViewModel();
+                timetrackvm.WorkDate = ((DateTime)timeTrack.WorkDate).ToShortDateString();
 
-            // TO DO: aggiungere metodo che aggiorna anche la datagrid
+
+                timetrackvm.WorkTime = TimeTracker.ToString(TimeSpan.FromTicks((long)timeTrack.WorkTime));
+
+                dataGridTimeTracks.Add(timetrackvm);
+            }
+
+            CollectionViewSource itemCollectionViewSource;
+            itemCollectionViewSource = (CollectionViewSource)(FindResource("ItemCollectionViewSource"));
+            itemCollectionViewSource.Source = dataGridTimeTracks;
         }
 
         /*-------------------------------------------------------------- SINGLETON --------------------------------------------------------------*/
