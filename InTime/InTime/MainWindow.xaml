@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         WindowStyle="None"
         ResizeMode="NoResize"
+        ShowInTaskbar="False"
         Title="InTime - MainWindow" Height="450" Width="300">
     <DockPanel LastChildFill="True">
         <StackPanel Name="MenuButtons" Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalAlignment="Stretch" Height="35" DockPanel.Dock="Top" Background="Gray">

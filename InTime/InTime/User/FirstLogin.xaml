@@ -5,24 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InTime.User"
         mc:Ignorable="d"
-        ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
-        Title="Login" Height="170" Width="400">
-    <Grid Margin="15">
+        Title="Login" Height="140" Width="400">
+    <Grid Margin="15 5 15 15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="1">Inserisci codice utente:</Label>
+        <Label Grid.Column="1" Margin="0 5 0 0" >Inserisci codice utente:</Label>
         <TextBox Name="UniqueIdInput" Grid.Column="1" Grid.Row="1" MinWidth="250"></TextBox>
 
-        <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
+        <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
             <Button IsDefault="True" Name="OkButton" Click="OkButton_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
             <Button IsCancel="True" MinWidth="60" Name="CancelButton" Click="CancelButton_Click">Annulla</Button>
         </WrapPanel>
