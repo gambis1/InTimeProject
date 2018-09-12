@@ -95,7 +95,7 @@ namespace InTime.Admin
             {
                 ListBoxItem itm = new ListBoxItem();
                 itm.Content = project.ProjectName;
-                itm.Tag = project.Id;
+                itm.Tag = project;
                 ProjectList.Items.Add(itm);
                 itm.Selected += new RoutedEventHandler(ProjectSelected);
             }
@@ -174,14 +174,14 @@ namespace InTime.Admin
             DbSet<TimeTrack> timeTracksDBSet = intimeDb.TimeTracks;
             DbSet<Assignment> AssignmentsDBSet = intimeDb.Assignments;
             
-            int projectId = (int)listBoxProject.Tag;
+            selectedProject = (Project)listBoxProject.Tag;
 
 
             // POPOLA LA DATAGRID
 
             // seleziona tutti gli assignment per un progetto
             List<Assignment> assignmentList = (from Assignment in AssignmentsDBSet
-                                               where Assignment.ProjectId == projectId
+                                               where Assignment.ProjectId == selectedProject.Id
                                                select Assignment).ToList();
 
             List<AssignmentForDataGrid> dataGridAssignments = new List<AssignmentForDataGrid>();
@@ -193,7 +193,7 @@ namespace InTime.Admin
                 int personId = assignment.PersonId;
 
                 List<TimeTrack> timetracksList = (from TimeTrack in timeTracksDBSet // seleziona tutti i timetrack di UNA persona per IL progetto selezionato
-                                                  where TimeTrack.ProjectId == projectId
+                                                  where TimeTrack.ProjectId == selectedProject.Id
                                                   where TimeTrack.PersonId == personId
                                                   select TimeTrack).ToList();
 
@@ -209,13 +209,16 @@ namespace InTime.Admin
                 AssignmentForDataGrid assignmentForDataGrid = new AssignmentForDataGrid(); // creazione Assignment per DataGrid
 
                 // LISTA DI PERSONE
-                foreach (Person person in personList)
-                {
-                    if (personId == person.Id)
-                    {
-                        assignmentForDataGrid.name = person.PersonName;
-                    }
-                }
+
+                //foreach (Person person in personList)
+                //{
+                //    if (personId == person.Id)
+                //    {
+                //        assignmentForDataGrid.name = person.PersonName;
+                //    }
+                //}
+
+                assignmentForDataGrid.name = assignment.Person.PersonName;
                 assignmentForDataGrid.time = TimeTracker.ToString(personTotalWorktime);
                 assignmentForDataGrid.active = assignment.Active;
                 assignmentForDataGrid.personId = assignment.PersonId;
@@ -227,13 +230,13 @@ namespace InTime.Admin
 
             // PROPRIETà DEL PROGETTO (GROUPBOX)
 
-            foreach (Project project in projectList) // pesca dalla lista dei progetti quello selezionato
-            {
-                if (projectId == project.Id)
-                {
-                    selectedProject = project;
-                }
-            }
+            //foreach (Project project in projectList) // pesca dalla lista dei progetti quello selezionato
+            //{
+            //    if (projectId == project.Id)
+            //    {
+            //        selectedProject = project;
+            //    }
+            //}
 
             TimeSpan projectTotalWorktime = TimeSpan.FromTicks(projectTotalTicks);
             TotalWorkTime.Text = TimeTracker.ToString(projectTotalWorktime);
