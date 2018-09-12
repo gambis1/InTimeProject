@@ -33,6 +33,7 @@ namespace InTime
         private TimeTracker timeTracker;
         private DispatcherTimer secondstimer;
         private DispatcherTimer minutesTimer;
+        public static Person currentUser;
 
         public MainWindow()
         {
@@ -41,16 +42,19 @@ namespace InTime
             this.Loaded += new RoutedEventHandler(WindowPositioned);
             this.Hide();
 
+            GetCurrentUser();
+            HideAdminButton(AdministratorButton);
+
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/StoppedIcon.ico"); // vecchio percorso icona: InTime.Properties.Resources.InTimeIcon;
             inTimeIcon.Visible = true;
             inTimeIcon.Text = "Timer fermo";
             inTimeIcon.Click += new EventHandler(this.inTimeIcon_Click);
 
-            //UserWindow userWindow = new UserWindow();
-            //userWindow.Show();
+            UserWindow userWindow = new UserWindow();
+            userWindow.Show();
 
-            AdministratorWindow administratorWindow = new AdministratorWindow();
-            administratorWindow.Show();
+            //AdministratorWindow administratorWindow = new AdministratorWindow();
+            //administratorWindow.Show();
         }
 
 
@@ -209,6 +213,39 @@ namespace InTime
 
                 MessageBoxResult idle = System.Windows.MessageBox.Show("A causa di un'inattività prolungata, il timer del progetto è stato arrestato. Clicca nuovamente su un progetto per ricominciare a tracciare il tempo di lavoro.", "InTime", MessageBoxButton.OK);
                 this.Show();
+            }
+        }
+
+        /*-------------------------------------------------------------- SETTINGS --------------------------------------------------------------*/
+
+        private void GetCurrentUser()
+        {
+            try
+            {
+                Guid userUniqueIdentifier = Properties.Settings.Default.UniqueIdentifier;
+
+                InTimeDbEntities intimeDb = new InTimeDbEntities();
+
+                DbSet<Person> personDbList = intimeDb.People;
+
+                currentUser = (from Person in personDbList
+                               where Person.AccessCode == userUniqueIdentifier
+                               select Person).Single();
+            }
+            catch (Exception e)
+            {
+                FirstLogin firstLogin = new FirstLogin();
+                firstLogin.ShowDialog();
+                firstLogin.Close();
+                GetCurrentUser();
+            }
+        }
+
+        private void HideAdminButton(System.Windows.Controls.Button AdminButton)
+        {
+            if (currentUser.Id == 1) // ADMIN
+            {
+                AdminButton.Visibility = Visibility.Collapsed;
             }
         }
     }

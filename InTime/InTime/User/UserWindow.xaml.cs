@@ -31,7 +31,7 @@ namespace InTime.User
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
-            currentUser = GetCurrentUser();
+            currentUser = MainWindow.currentUser;
             GetAssignmentsInListbox();
         }
 
@@ -44,18 +44,7 @@ namespace InTime.User
 
         /*-------------------------------------------------------------- LISTBOX --------------------------------------------------------------*/
 
-        public Person GetCurrentUser()
-        {
-            // TO DO: OTTENERE userUniqueIdentifier LEGGENDO FILE SETTINGS
-            // TO DO 2: userUniqueIdentifier STATICA ALL'AVVIO DI MAINWINDOW
-
-            userUniqueIdentifier = new Guid("fca345b4-e009-4fa3-a9b6-64210b584199");
-
-            DbSet<Person> personDbList = intimeDb.People;
-            return (from Person in personDbList
-                    where Person.AccessCode == userUniqueIdentifier
-                    select Person).Single();
-        }
+        
 
         private void GetAssignmentsInListbox()
         {

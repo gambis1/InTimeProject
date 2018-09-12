@@ -104,11 +104,15 @@
     <Compile Include="Project.cs">
       <DependentUpon>InTimeDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TimeTrack.cs">
       <DependentUpon>InTimeDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User\FirstLogin.xaml.cs">
+      <DependentUpon>FirstLogin.xaml</DependentUpon>
     </Compile>
     <Compile Include="User\UserWindow.xaml.cs">
       <DependentUpon>UserWindow.xaml</DependentUpon>
@@ -140,6 +144,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="User\FirstLogin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
