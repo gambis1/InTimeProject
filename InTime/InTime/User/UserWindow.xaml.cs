@@ -22,7 +22,6 @@ namespace InTime.User
         private static InTimeDbEntities intimeDb = new InTimeDbEntities();
         private static UserWindow userWindow;
 
-        private static Guid userUniqueIdentifier;
         private static Person currentUser;
 
         private List<Assignment> userAssignments;

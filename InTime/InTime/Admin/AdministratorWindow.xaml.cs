@@ -61,10 +61,10 @@ namespace InTime.Admin
             this.Close();
         }
 
-        private void AddPerson_Click(object sender, RoutedEventArgs e)
+        private void PeopleWindow_Click(object sender, RoutedEventArgs e)
         {
-            AddPersonWindow addPersonWindow = new AddPersonWindow();
-            addPersonWindow.Show();
+            PeopleWindow peopleWindow = new PeopleWindow();
+            peopleWindow.Show();
         }
 
         private void NewProjectButton_Click(object sender, RoutedEventArgs e)

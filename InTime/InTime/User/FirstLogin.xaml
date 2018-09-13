@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InTime.User"
         mc:Ignorable="d"
-        WindowStartupLocation="CenterOwner"
         Title="Login" Height="140" Width="400">
     <Grid Margin="15 5 15 15">
         <Grid.ColumnDefinitions>
@@ -14,16 +13,16 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="1" Margin="0 5 0 0" >Inserisci codice utente:</Label>
-        <TextBox Name="UniqueIdInput" Grid.Column="1" Grid.Row="1" MinWidth="250"></TextBox>
+        <Label Grid.Column="1" VerticalAlignment="Bottom">Inserisci codice utente:</Label>
+        <TextBox Name="UniqueIdInput" Grid.Column="1" Grid.Row="1" Height="25" VerticalAlignment="Top"></TextBox>
 
         <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
-            <Button IsDefault="True" Name="OkButton" Click="OkButton_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
-            <Button IsCancel="True" MinWidth="60" Name="CancelButton" Click="CancelButton_Click">Annulla</Button>
+            <Button IsDefault="True" Name="OkButton" Click="OkButton_Click" MinWidth="90" Margin="0,0,10,0" Height="25">_Ok</Button>
+            <Button IsCancel="True" MinWidth="90" Name="CancelButton" Click="CancelButton_Click" Height="25">Annulla</Button>
         </WrapPanel>
     </Grid>
 </Window>

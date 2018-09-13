@@ -20,6 +20,7 @@ using InTime.Logic;
 using System.Windows.Threading;
 using System.Data.Entity;
 using System.Runtime.InteropServices;
+using Button = System.Windows.Controls.Button;
 
 namespace InTime
 {
@@ -115,8 +116,54 @@ namespace InTime
             }            
         }
 
-
         /*-------------------------------------------------------------- TASTO PROGETTO 1 --------------------------------------------------------------*/
+
+        private void GenerateGnicosa()
+        {
+            //< DockPanel Name = "Progetto1" Margin = "10" >
+            DockPanel dockPnl = new DockPanel
+            {
+                Name = "Progetto 1",
+                Margin = new Thickness(10)
+            };
+
+            //< Button Content = "Lavora su Progetto 1" Padding = "10" Margin = "0 10 0 0" Click = "TimeProject1_Click" DockPanel.Dock = "Bottom" />
+            Button trackBtn = new Button
+            {
+                Name = "trackBtn",
+                Content = "Lavora su progetto 1",
+                Padding = new Thickness(10),
+                Margin = new Thickness(0, 10, 0, 0)
+            };
+            trackBtn.Click += TimeProject1_Click;
+            dockPnl.Children.Add(trackBtn);
+            DockPanel.SetDock(trackBtn, Dock.Bottom);
+
+            //< TextBlock FontSize = "15" DockPanel.Dock = "Left" VerticalAlignment = "Center" > Progetto 1 </ TextBlock >
+            TextBlock timeLabel = new TextBlock
+            {
+                Name = "timeLabel",
+                Text = "Progetto 1",
+                FontSize = 15,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            DockPanel.SetDock(timeLabel, Dock.Left);
+
+            //< TextBlock FontSize = "15" HorizontalAlignment = "Left" VerticalAlignment = "Center" DockPanel.Dock = "Left" Margin = "100,0,0,0" > Tempo:</ TextBlock >
+            TextBlock currentTime = new TextBlock
+            {
+                Text = "Tempo:",
+                FontSize = 15,
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(100, 0, 0, 0)
+            };
+            DockPanel.SetDock(currentTime, Dock.Left);
+
+            //< TextBlock x: Name = "Project1Time" FontSize = "15" HorizontalAlignment = "Right" VerticalAlignment = "Center" DockPanel.Dock = "Right" > 00:00:00 </ TextBlock >
+
+
+        }
 
         private void TimeProject1_Click(object sender, RoutedEventArgs e)
         {
@@ -243,7 +290,7 @@ namespace InTime
 
         private void HideAdminButton(System.Windows.Controls.Button AdminButton)
         {
-            if (currentUser.Id == 1) // ADMIN
+            if (currentUser.Id != 1) // ADMIN
             {
                 AdminButton.Visibility = Visibility.Collapsed;
             }

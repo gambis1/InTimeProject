@@ -69,8 +69,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Admin\AddPersonWindow.xaml.cs">
-      <DependentUpon>AddPersonWindow.xaml</DependentUpon>
+    <Compile Include="Admin\PeopleWindow.xaml.cs">
+      <DependentUpon>PeopleWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Admin\AssignmentDetailWindow.xaml.cs">
       <DependentUpon>AssignmentDetailWindow.xaml</DependentUpon>
@@ -119,7 +119,7 @@
     </Compile>
     <Compile Include="ViewModel\AssignmentForDataGrid.cs" />
     <Compile Include="ViewModel\TimeTrackViewModel.cs" />
-    <Page Include="Admin\AddPersonWindow.xaml">
+    <Page Include="Admin\PeopleWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

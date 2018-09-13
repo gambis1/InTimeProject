@@ -15,17 +15,28 @@ using System.Windows.Shapes;
 
 namespace InTime.Admin
 {
-    /// <summary>
-    /// Logica di interazione per AddPerson.xaml
-    /// </summary>
-    public partial class AddPersonWindow : Window
+    public partial class PeopleWindow : Window
     {
         InTimeDbEntities intimeDb = new InTimeDbEntities();
 
-        public AddPersonWindow()
+        public PeopleWindow()
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
+            PopulateDataGrid();
+        }
+
+        private void PopulateDataGrid()
+        {
+            DbSet<Person> personDbList = intimeDb.People;
+            List<Person> personList = (from Person in personDbList
+                          orderby Person.PersonName
+                          select Person).ToList();
+
+            // BINDING
+            CollectionViewSource itemCollectionViewSource;
+            itemCollectionViewSource = (CollectionViewSource)(FindResource("ItemCollectionViewSource"));
+            itemCollectionViewSource.Source = personList;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
@@ -40,23 +51,13 @@ namespace InTime.Admin
 
                 intimeDb.People.Add(newPerson);
                 intimeDb.SaveChanges();
+
+                PopulateDataGrid();
             }
             else
             {
                 MessageBox.Show("Il nome della persona non è stato inserito. Inserire un nome di persona valido, quindi riprovare.", "Nome di persona non valido", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-            AdministratorWindow mainWindow = Application.Current.Windows.OfType<AdministratorWindow>().FirstOrDefault();
-            if(mainWindow != null)
-            {
-                mainWindow.Show();
-            }
-            this.Close();
-        }
-
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }

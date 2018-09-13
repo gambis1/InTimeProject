@@ -17,7 +17,7 @@
                 <MenuItem Header="Chiudi" Click="Close_Click" InputGestureText="Alt+F4" />
             </MenuItem>
             <MenuItem Header="Database">
-                <MenuItem Header="Aggiungi persona" Click="AddPerson_Click" />
+                <MenuItem Header="Gestisci persone" Click="PeopleWindow_Click" />
             </MenuItem>
         </Menu>
         <GroupBox DockPanel.Dock="Left" Width="200" Header="Lista progetti" Margin="10 5 10 10">

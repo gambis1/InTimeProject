@@ -25,6 +25,7 @@ namespace InTime.User
 
         public FirstLogin()
         {
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
         }
 
@@ -45,7 +46,7 @@ namespace InTime.User
                     Properties.Settings.Default.UniqueIdentifier = uniqueidInput;
                     Properties.Settings.Default.Save();
 
-                    MessageBox.Show("Hai effettuato l'accesso come " + user.PersonName, "Successo");
+                    MessageBox.Show("Hai effettuato l'accesso come \"" + user.PersonName + "\".", "Successo");
                     this.Close();
                 }
                 catch (Exception a)
