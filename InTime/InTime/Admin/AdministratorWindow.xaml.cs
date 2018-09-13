@@ -31,6 +31,8 @@ namespace InTime.Admin
 
         private static AdministratorWindow administratorWindow; // per singleton
 
+        private string adminCode = "fca345b4-e009-4fa3-a9b6-64210b584199"; // SOLO PER TESTING
+
         public AdministratorWindow()
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
