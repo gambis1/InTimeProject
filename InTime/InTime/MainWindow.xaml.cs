@@ -29,12 +29,17 @@ namespace InTime
     /// </summary>
     public partial class MainWindow : Window
     {
-        NotifyIcon inTimeIcon = new NotifyIcon();
-        private Stopwatch project1_stopwatch;
+        NotifyIcon inTimeIcon = new NotifyIcon();        
+        InTimeDbEntities intimeDb = new InTimeDbEntities();
+        public static Person currentUser;
+
+        private static Assignment currentTrackedAssignment;
+        private static TextBlock currentUITime;
+
+        private Stopwatch stopwatch;
         private TimeTracker timeTracker;
         private DispatcherTimer secondstimer;
         private DispatcherTimer minutesTimer;
-        public static Person currentUser;
 
         public MainWindow()
         {
@@ -45,6 +50,8 @@ namespace InTime
 
             GetCurrentUser();
             HideAdminButton(AdministratorButton);
+
+            PopulateTrackingWindow();
 
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/StoppedIcon.ico"); // vecchio percorso icona: InTime.Properties.Resources.InTimeIcon;
             inTimeIcon.Visible = true;
@@ -107,7 +114,7 @@ namespace InTime
             {
                 if (timeTracker.IsRunning())
                     timeTracker.Stop();
-                project1_stopwatch.Stop();
+                stopwatch.Stop();
                 inTimeIcon.Dispose(); // fa scomparire l'icona dalla barra
                 System.Windows.Application.Current.Shutdown();
             } else
@@ -116,54 +123,92 @@ namespace InTime
             }            
         }
 
-        /*-------------------------------------------------------------- TASTO PROGETTO 1 --------------------------------------------------------------*/
+        /*-------------------------------------------------------------- CREAZIONE LISTA PROGETTI --------------------------------------------------------------*/
 
-        private void GenerateGnicosa()
+        private void PopulateTrackingWindow()
         {
-            //< DockPanel Name = "Progetto1" Margin = "10" >
+            DbSet<Assignment> AssignmentsDBSet = intimeDb.Assignments;
+            List<Assignment> assignmentList = (from Assignment in AssignmentsDBSet
+                                               where Assignment.PersonId == currentUser.Id
+                                               select Assignment).ToList();
+
+            foreach(Assignment assignment in assignmentList)
+            {
+                AddProject(assignment);
+            }
+        }
+
+        private void AddProject(Assignment assignment)
+        {
+            string projectName = assignment.Project.ProjectName;
+
+            // DOCKPANEL
             DockPanel dockPnl = new DockPanel
             {
-                Name = "Progetto 1",
+                Name = "dockPnl",
                 Margin = new Thickness(10)
             };
 
-            //< Button Content = "Lavora su Progetto 1" Padding = "10" Margin = "0 10 0 0" Click = "TimeProject1_Click" DockPanel.Dock = "Bottom" />
-            Button trackBtn = new Button
+            // CURRENT TIME TRACKER
+            TextBlock projectTimeBlock = new TextBlock()
+            {
+                Name = "projectTimeBlock",
+                Text = "00:00:00",
+                FontSize = 15,
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            dockPnl.Children.Add(projectTimeBlock);
+            DockPanel.SetDock(projectTimeBlock, Dock.Right);
+
+            Object[] projectArray = new Object[] { assignment, projectTimeBlock };
+
+            // START TRACKING BUTTON
+            Button startBtn = new Button
             {
                 Name = "trackBtn",
-                Content = "Lavora su progetto 1",
+                Tag = projectArray,
+                Content = "Lavora a \"" + projectName + "\"",
                 Padding = new Thickness(10),
                 Margin = new Thickness(0, 10, 0, 0)
             };
-            trackBtn.Click += TimeProject1_Click;
-            dockPnl.Children.Add(trackBtn);
-            DockPanel.SetDock(trackBtn, Dock.Bottom);
+            startBtn.Click += StartTracking_Click;
+            dockPnl.Children.Add(startBtn);
+            DockPanel.SetDock(startBtn, Dock.Bottom);
 
-            //< TextBlock FontSize = "15" DockPanel.Dock = "Left" VerticalAlignment = "Center" > Progetto 1 </ TextBlock >
-            TextBlock timeLabel = new TextBlock
+            // PROJECT NAME LABEL
+            TextBlock projectLabel = new TextBlock
             {
-                Name = "timeLabel",
-                Text = "Progetto 1",
+                Name = "projectLabel",
+                Text = projectName,
                 FontSize = 15,
                 VerticalAlignment = VerticalAlignment.Center,
             };
-            DockPanel.SetDock(timeLabel, Dock.Left);
+            dockPnl.Children.Add(projectLabel);
+            DockPanel.SetDock(projectLabel, Dock.Left);
 
-            //< TextBlock FontSize = "15" HorizontalAlignment = "Left" VerticalAlignment = "Center" DockPanel.Dock = "Left" Margin = "100,0,0,0" > Tempo:</ TextBlock >
-            TextBlock currentTime = new TextBlock
-            {
-                Text = "Tempo:",
-                FontSize = 15,
-                HorizontalAlignment = System.Windows.HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(100, 0, 0, 0)
-            };
-            DockPanel.SetDock(currentTime, Dock.Left);
-
-            //< TextBlock x: Name = "Project1Time" FontSize = "15" HorizontalAlignment = "Right" VerticalAlignment = "Center" DockPanel.Dock = "Right" > 00:00:00 </ TextBlock >
-
-
+            ProjectButtons.Children.Add(dockPnl);
+            ProjectButtons.Children.Add(new Separator());
         }
+
+        /*-------------------------------------------------------------- TASTI PROGETTI --------------------------------------------------------------*/
+
+        private void StartTracking_Click(object sender, RoutedEventArgs e)
+        {
+            Object[] assignmentAndTimeBlock = (Object[])((Button)sender).Tag;
+
+            currentTrackedAssignment = (Assignment)assignmentAndTimeBlock[0];
+            currentUITime = (TextBlock)assignmentAndTimeBlock[1];
+
+            secondstimer.Start();
+            minutesTimer.Start();
+            timeTracker = new TimeTracker(currentTrackedAssignment.ProjectId, currentTrackedAssignment.PersonId);
+            currentUITime.Text = timeTracker.Start(); // DA FINIRE: timetracker.start() aggiorna project 2 -> da dinamizzare
+
+            inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/PlayingIcon.ico");
+        }
+
+        /*-------------------------------------------------------------- TASTO PROGETTO 1 --------------------------------------------------------------*/
 
         private void TimeProject1_Click(object sender, RoutedEventArgs e)
         {
@@ -171,7 +216,7 @@ namespace InTime
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_Tick1;
             timer.Start();
-            project1_stopwatch.Start();
+            stopwatch.Start();
 
             if (timeTracker.IsRunning())
                 timeTracker.Stop(); // ricordiamoci che è provvisorio e non va
@@ -182,7 +227,7 @@ namespace InTime
 
         void timer_Tick1(object sender, EventArgs e)
         {
-            TimeSpan ts = project1_stopwatch.Elapsed;
+            TimeSpan ts = stopwatch.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds);
             Project1Time.Text = elapsedTime;
             inTimeIcon.Text = "Progetto 1: " + elapsedTime;
@@ -198,7 +243,7 @@ namespace InTime
             timeTracker = new TimeTracker(10, 1);
             Project2Time.Text = timeTracker.Start();
 
-            project1_stopwatch.Stop(); // TO DO: da dinamizzare
+            stopwatch.Stop(); // TO DO: da dinamizzare
 
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/PlayingIcon.ico");
         }
@@ -216,7 +261,7 @@ namespace InTime
             timeTracker.Stop();
             secondstimer.Stop();
             minutesTimer.Stop();
-            project1_stopwatch.Stop();
+            stopwatch.Stop();
             timeTracker.Stop();
 
             inTimeIcon.Icon = new System.Drawing.Icon("../../Resources/StoppedIcon.ico");
@@ -228,7 +273,7 @@ namespace InTime
 
         private void InitalizeTrackers() // avvia tutto
         {
-            project1_stopwatch = new Stopwatch();
+            stopwatch = new Stopwatch();
 
             secondstimer = new DispatcherTimer();
             secondstimer.Interval = TimeSpan.FromSeconds(1);
@@ -242,7 +287,7 @@ namespace InTime
 
         void time_UpdateUI(object sender, EventArgs e) // aggiorna il timer dell'interfaccia
         {
-            string elapsedTime = timeTracker.UpdateSecond();
+            string elapsedTime = timeTracker.GetCurrentTime();
             Project2Time.Text = elapsedTime;
             inTimeIcon.Text = "Progetto 2: " + elapsedTime;
         }

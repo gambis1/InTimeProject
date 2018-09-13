@@ -49,11 +49,6 @@ namespace InTime.Logic
                 intimeDb.TimeTracks.Add(newRecord);
                 intimeDb.SaveChanges();
                 trackerId = newRecord.Id;
-                //trackerId =
-                //    (from TimeTrack in timeTracksList
-                //     where TimeTrack.ProjectId == projectId
-                //     where TimeTrack.PersonId == personId
-                //     where TimeTrack.WorkDate == );
             }
             else // data già presente: query sul tempo già tracciato
             {
@@ -95,7 +90,7 @@ namespace InTime.Logic
             }
         }
 
-        public string UpdateSecond()
+        public string GetCurrentTime()
         {
             TimeSpan ts = stopwatch.Elapsed + startingTime;
             return ToString(ts);
