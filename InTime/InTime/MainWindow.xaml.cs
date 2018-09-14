@@ -21,6 +21,9 @@ using System.Windows.Threading;
 using System.Data.Entity;
 using System.Runtime.InteropServices;
 using Button = System.Windows.Controls.Button;
+using System.Dynamic;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace InTime
 {
@@ -134,7 +137,10 @@ namespace InTime
 
             foreach(Assignment assignment in assignmentList)
             {
-                AddProject(assignment);
+                if (AssignmentIsActive(assignment))
+                {
+                    AddProject(assignment);
+                }
             }
         }
 
@@ -308,6 +314,17 @@ namespace InTime
             {
                 AdminButton.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private bool AssignmentIsActive(Assignment assignment)
+        {
+            //dynamic expando = new ExpandoObject();
+            //expando.id = assignment.ProjectId;
+            //expando.active = true;
+
+            //File.WriteAllText(@"C:\file.json", JsonConvert.SerializeObject(expando));
+
+            return true;
         }
     }
 }
