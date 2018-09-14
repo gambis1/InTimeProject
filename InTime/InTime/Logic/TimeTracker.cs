@@ -5,34 +5,46 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace InTime.Logic
 {
     class TimeTracker
     {
         private Stopwatch stopwatch = new Stopwatch();
-        private TimeSpan startingTime;
-        private int trackerId;
-        private int projectId;
-        private int personId;
-        private InTimeDbEntities intimeDb = new InTimeDbEntities();
+        private static TimeSpan startingTime;
 
-        public TimeTracker(int projectId, int personId)
+        private static int trackerId;
+        private Assignment assignment;
+
+        private static InTimeDbEntities intimeDb = new InTimeDbEntities();
+
+        public TimeTracker(Assignment assignment)
         {
-            this.projectId = projectId;
-            this.personId = personId;
+            this.assignment = assignment;
         }
 
         public string Start()
         {
+            string startingTime = GetStartingTime(assignment);
+            stopwatch.Start();
+
+            return startingTime;
+        }
+
+        public static string GetStartingTime(Assignment assignment)
+        {
+            int projectId = assignment.ProjectId;
+            int personId = assignment.PersonId;
+
             DbSet<TimeTrack> timeTracksList = intimeDb.TimeTracks;
 
-            DateTime? trackingDate = 
+            DateTime? trackingDate =
                  (from TimeTrack in timeTracksList
-                 orderby TimeTrack.Id descending
-                 where TimeTrack.ProjectId == projectId
-                 where TimeTrack.PersonId == personId
-                 select TimeTrack.WorkDate).FirstOrDefault();
+                  orderby TimeTrack.Id descending
+                  where TimeTrack.ProjectId == projectId
+                  where TimeTrack.PersonId == personId
+                  select TimeTrack.WorkDate).FirstOrDefault();
 
             startingTime = new TimeSpan(0, 0, 0);
 
@@ -63,9 +75,8 @@ namespace InTime.Logic
                 startingTime = new TimeSpan((long)record.WorkTime);
                 trackerId = record.Id;
             }
-            stopwatch.Start();
 
-            return startingTime.ToString();
+            return TimeTracker.ToString(startingTime);
         }
 
         public void Update()
